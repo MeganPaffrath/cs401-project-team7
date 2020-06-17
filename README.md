@@ -5,7 +5,7 @@
 * Haiyang Sun
 * Prasoon Shakya
 * Priyanka Gopal
-* Megan Paffrath
+* Megan Paffrath, iv2325
 
 ## Outline:
 * Create an online file storage system for much like DropBox. Allow private and public file options. Include versioning and strong security.  

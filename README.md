@@ -15,3 +15,12 @@
 * Client software allows a user to log in for services
 * Clients may only access authorized data
 * Needs a protocol standard to allow for clones
+
+
+## Github:
+* Create a new branch: `git checkout -b <branch>`
+* Check branch status: `git status`
+* Stage a file for commit: `git add <filename>`
+* Make sure all the files you want to commit are staged: `git status`
+* Set commit message: `git commit -m "<message>"`
+* Push to your branch: `git push origin <branchname>`

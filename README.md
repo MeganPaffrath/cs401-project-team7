@@ -1,9 +1,9 @@
 # cs401-project-team7
-
+##phase 3
 ## Topic: Multi User File Storage System
 
 ## Team Members:
-* Haiyang Sun
+* Haiyang Sun, dt9983
 * Prasoon Shakya, fm5549
 * Priyanka Gopal
 * Megan Paffrath, iv2325

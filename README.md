@@ -1,11 +1,13 @@
 # cs401-project-team7
+##phase 3
 ## Topic: Multi User File Storage System
 
 ## Team Members:
-* Haiyang Sun
-* Prasoon Shakya
+* Haiyang Sun, dt9983
+* Prasoon Shakya, fm5549
 * Priyanka Gopal
 * Megan Paffrath, iv2325
+* Monicah Gikanga RU5582
 
 ## Outline:
 * Create an online file storage system for much like DropBox. Allow private and public file options. Include versioning and strong security.  

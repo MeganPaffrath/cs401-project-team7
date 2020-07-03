@@ -19,15 +19,24 @@ public class ClientHelper {
 		dOut = new DataOutputStream(socket.getOutputStream());
 	}
 	
-	// support functions
+	// Support functions:
+	
+	/*
+	 * Sends a string message to the Server
+	 * @param message to be sent
+	 */
 	public void sendToServer(String msg) throws IOException {
-		// CURRENT WORKING POS
-		System.out.println("Trying to send message.");
+		System.out.println("Trying to send message: " + msg);
 		byte[] message = msg.getBytes("UTF-8");
-		System.out.println("Msg: " + new String(message));
 		dOut.writeInt(message.length);
 		dOut.write(message);
+		dOut.flush();
 	}
+	
+	public void sendFile() {
+		// turn file into bytes to be sent to server
+	}
+	
 	
 	// user handling
 	public void login() {}

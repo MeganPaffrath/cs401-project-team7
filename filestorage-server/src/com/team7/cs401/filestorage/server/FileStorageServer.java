@@ -32,26 +32,17 @@ public class FileStorageServer {
         public void run() {
             System.out.println("Connected: " + socket);
             try {
-            	// CURRENT WORKING POS
+            	// Turn into listening function? vvvvv
             	DataInputStream dIn = new DataInputStream(socket.getInputStream());
             	
             	int mLength = dIn.readInt();
             	System.out.println("mLength: " + mLength);
             	if(mLength>0) {
             		byte[] message = new byte[mLength];
-            		System.out.println(new String(message) );
             		dIn.readFully(message, 0, message.length);
-            		System.out.println(new String(message) );
-            		System.out.println(dIn);
+            		System.out.println("Server recieved: " + new String(message) );
             	}
-//            	byte messageType = dIn.readByte();
-//            	System.out.println("Server says: " + dIn.readUTF() + "done.");
-//            	dIn.close();
-//                var in = new Scanner(socket.getInputStream());
-//                var out = new PrintWriter(socket.getOutputStream(), true);
-//                while (in.hasNextLine()) {
-//                    out.println("Server Response: " + in.nextLine().toUpperCase());
-//                }
+            	// Turn into listening function? ^^^^^
             } catch (Exception e) {
                 System.out.println("Error:" + socket);
             } finally {

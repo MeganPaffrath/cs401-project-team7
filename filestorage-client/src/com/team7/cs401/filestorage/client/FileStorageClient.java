@@ -21,11 +21,6 @@ public class FileStorageClient {
         try (var socket = new Socket(args[0], 1234)) {
             System.out.println("Enter lines of text then Ctrl+D or Ctrl+C to quit");
             
-            // Set up scanner to use w/ server
-//            var scanner = new Scanner(System.in);
-//            var in = new Scanner(socket.getInputStream());
-//            var out = new PrintWriter(socket.getOutputStream(), true);
-            
             ClientHelper cHelper = new ClientHelper(socket);
             
             // User input and function calls
@@ -49,9 +44,7 @@ public class FileStorageClient {
                 		System.out.println("TRY TO UPLOAD A FILE");
                 		break;
                 	case OTHER:
-                		System.out.println("DO SOMETHING ELSE");
                 		cHelper.sendToServer("test send");
-                		selection = UserSelection.LOGIN;
                 		break;
                 	default:
                 		System.out.println("Something went wrong.");

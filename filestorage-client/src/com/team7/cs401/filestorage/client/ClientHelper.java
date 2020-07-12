@@ -39,10 +39,42 @@ public class ClientHelper {
 	
 	
 	// user handling
-	public void login() {}
+	/*
+	 * Attempts to log user in, sets currUser if valid
+	 * 
+	 * @param username
+	 * @param password
+	 * @return true if valid login and currUser set
+	 */
+	public boolean login(String username, String password) {
+		return false;
+	}
+	
+	/*
+	 * Logs user out
+	 */
 	public void logout() {}
-	public void signUp() {}
-	public void accountSettings() {}
+	
+	/*
+	 * User sign up request
+	 * Sets currUser to this user if successful login created
+	 * 
+	 * @param username
+	 * @param password
+	 * @param email
+	 * @return true if user created and currUser set
+	 */
+	public boolean signUp(String username, String password, String email) {
+		return false;
+	}
+	
+	/*
+	 * Allows user to change account settings
+	 * @return true if changes are made
+	 */
+	public boolean accountSettings() {
+		return false;
+	}
 	
 	
 	// File handling

@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 
-public class FileStorageServer {
+public class ServerCommunicator {
 	protected static int threadCount = 15;
 	
 	public static void main(String[] args) throws Exception {

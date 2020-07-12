@@ -6,7 +6,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class FileStorageClient {
+
+/*
+ * THIS FILE MIGHT NEED TO BE CHANGED COMPLETELY
+ * Should we be separating client helper from the UI or combining it?
+ */
+
+public class ClientCommunicator {
 	private enum UserSelection {
 		LOGIN, SIGNUP, LOGOUT,
 		UPLOAD,

@@ -34,6 +34,7 @@ public class ClientHelper {
 	}
 	
 	public void sendFile() {
+		System.out.println("Attempt to send file");
 		// turn file into bytes to be sent to server
 	}
 	
@@ -47,13 +48,16 @@ public class ClientHelper {
 	 * @return true if valid login and currUser set
 	 */
 	public boolean login(String username, String password) {
+		System.out.println("Attempt to login");
 		return false;
 	}
 	
 	/*
 	 * Logs user out
 	 */
-	public void logout() {}
+	public void logout() {
+		System.out.println("Attempt to logout");
+	}
 	
 	/*
 	 * User sign up request
@@ -65,6 +69,7 @@ public class ClientHelper {
 	 * @return true if user created and currUser set
 	 */
 	public boolean signUp(String username, String password, String email) {
+		System.out.println("Attempt to sign up");
 		return false;
 	}
 	
@@ -73,6 +78,7 @@ public class ClientHelper {
 	 * @return true if changes are made
 	 */
 	public boolean accountSettings() {
+		System.out.println("Attempt to edit accout Settings");
 		return false;
 	}
 	

@@ -61,6 +61,7 @@ public class ClientHelperTest {
 		assertEquals("text1 should be <username>", "user", msg.getText1());
 		assertEquals("text2 should be <password>", "pass", msg.getText2());
 		assertEquals("text3 should be <email>", "email", msg.getText3());
+
 	}
 	
 }

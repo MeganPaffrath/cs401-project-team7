@@ -4,7 +4,7 @@ public class CurrentUser {
 	private String userName;
 	private boolean loggedIn;
 	
-	public void CurrentUser(String user) {
+	public CurrentUser(String user) {
 		this.setUserName(user);
 		setLoggedIn(true);
 	}

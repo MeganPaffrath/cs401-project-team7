@@ -20,6 +20,10 @@ public class ClientCommunicator {
 	}
 
     public static void main(String[] args) throws Exception {
+    	
+    	
+    	
+    	
         if (args.length != 1) {
             System.err.println("Failed to pass IP as command line argument.");
             return;

@@ -22,7 +22,8 @@ public class ClientHelper {
 	 */
 	public Message generateLogin(String username, String password) {
 		System.out.println("Attempt to login");
-		return null;
+		Message msg = new Message("login", "pending", username, password);
+		return msg;
 	}
 	
 	
@@ -33,6 +34,9 @@ public class ClientHelper {
 	 * @return true if successful login
 	 */
 	public boolean handleLogin(Message msg) {
+		if (msg.getStatus().equalsIgnoreCase("success")) {
+			return true;
+		}
 		return false;
 	}
 	

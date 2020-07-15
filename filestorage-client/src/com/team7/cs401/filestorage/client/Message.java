@@ -5,18 +5,30 @@ import java.io.Serializable;
 public class Message implements Serializable {
     protected String type;
     protected String status;
-    protected String text;
+    protected String text1;
+    protected String text2;
+    
+    // ideas for files and list of users:
+    protected String[] textArray;
+    protected byte[] file;
 
     public Message(){
         this.type = "Undefined";
         this.status = "Undefined";
-        this.text = "Undefined";
+        this.text1 = "Undefined";
     }
 
     public Message(String type, String status, String text){
         setType(type);
         setStatus(status);
-        setText(text);
+        setText1(text);
+    }
+    
+    public Message(String type, String status, String text, String text2){
+        setType(type);
+        setStatus(status);
+        setText1(text);
+        setText2(text2);
     }
 
     private void setType(String type){
@@ -27,8 +39,12 @@ public class Message implements Serializable {
     	this.status = status;
     }
 
-    public void setText(String text){
-    	this.text = text;
+    public void setText1(String text){
+    	this.text1 = text;
+    }
+    
+    public void setText2(String text){
+    	this.text2 = text;
     }
 
     public String getType(){
@@ -39,8 +55,12 @@ public class Message implements Serializable {
     	return status;
     }
 
-    public String getText(){
-    	return text;
+    public String getText1(){
+    	return text1;
+    }
+    
+    public String getText2(){
+    	return text2;
     }
 
 }

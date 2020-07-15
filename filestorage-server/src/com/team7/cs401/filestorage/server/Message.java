@@ -1,4 +1,4 @@
-package com.team7.cs401.filestorage.client;
+package com.team7.cs401.filestorage.server;
 
 import java.io.Serializable;
 
@@ -81,3 +81,4 @@ public class Message implements Serializable {
     }
 
 }
+

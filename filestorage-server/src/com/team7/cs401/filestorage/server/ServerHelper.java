@@ -4,19 +4,53 @@ public class ServerHelper {
 	/*
 	 * Checks if user is valid
 	 * 
-	 * @param username
-	 * @param password
-	 * @return true if valid user
+	 * @param Message
+	 * @return msg with staus "valid" if valid
 	 */
-	public boolean validateLogin(String username, String password) {
-		return false;
+	public static Message validateLogin(Message msg) {
+		String username = msg.getText1();
+		String password = msg.getText2();
+		
+		// if valid user:
+		msg.setStatus("valid");
+		// otherwise dont change status
+		return msg;
 	}
-	public void newUser() {}
-	public void logout() {}
-	public void upload() {}
-	public void grantFileAccess() {}
-	public void grantDownloadRequest() {}
-	public void setValidUser() {}
-	public void logEvent() {}
-	public void changeAccountSettings() {}
+	
+	/*
+	 * Tries to generate new user
+	 * If user generated, sets status to "valid"
+	 * 
+	 * @param Message
+	 * @return msg with status "valid" if valid
+	 * 
+	 */
+	public Message newUser(Message msg) {
+		// if valid user generated:
+		msg.setStatus("valid");
+		// otherwise dont change status
+		return msg;
+	}
+	
+	/*
+	 * logs the user out
+	 * 
+	 * @param Message
+	 */
+	public void logout(Message msg) {}
+	
+	
+	public Message upload(Message msg) {return null;}
+	public Message grantFileAccess(Message msg) {return null;}
+	public Message grantDownloadRequest(Message msg) {return null;}
+	public Message setValidUser(Message msg) {return null;}
+	public void logEvent(String event) {}
+	
+	/*
+	 * Lets user change password and email, not username
+	 * 
+	 * @param Message
+	 * @return Message with status "success"
+	 */
+	public Message changeAccountSettings(Message msg) {return null;}
 }

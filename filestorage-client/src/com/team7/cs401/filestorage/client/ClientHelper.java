@@ -10,86 +10,102 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class ClientHelper {
-	CurrentUser currUser = null;
-	DataOutputStream dOut;
-	Socket socket;
-	
-	public ClientHelper(Socket skt) throws IOException {
-		this.socket = skt;
-		dOut = new DataOutputStream(socket.getOutputStream());
-	}
-	
-	// Support functions:
-	
-	/*
-	 * Sends a string message to the Server
-	 * @param message to be sent
-	 */
-	public void sendToServer(String msg) throws IOException {
-		System.out.println("Trying to send message: " + msg);
-		byte[] message = msg.getBytes("UTF-8");
-		dOut.writeInt(message.length);
-		dOut.write(message);
-		dOut.flush();
-	}
-	
-	public void sendFile() {
-		System.out.println("Attempt to send file");
-		// turn file into bytes to be sent to server
-	}
-	
 	
 	// user handling
+	
 	/*
-	 * Attempts to log user in, sets currUser if valid
+	 * Generates login message to send to the server
 	 * 
 	 * @param username
 	 * @param password
-	 * @return true if valid login and currUser set
+	 * @return message to be sent to server
 	 */
-	public boolean login(String username, String password) {
+	public Message generateLogin(String username, String password) {
 		System.out.println("Attempt to login");
+		return null;
+	}
+	
+	
+	/*
+	 * Handles server response
+	 * 
+	 * @param Message
+	 * @return true if successful login
+	 */
+	public boolean handleLogin(Message msg) {
 		return false;
 	}
 	
 	/*
-	 * Logs user out
+	 * Generates message to log user out
+	 * 
+	 * @return Message
 	 */
-	public void logout() {
+	public Message logout() {
 		System.out.println("Attempt to logout");
+		return null;
 	}
 	
 	/*
-	 * User sign up request
-	 * Sets currUser to this user if successful login created
+	 * Generates user sign up request message
 	 * 
 	 * @param username
 	 * @param password
 	 * @param email
-	 * @return true if user created and currUser set
+	 * @return Message to be sent to server
 	 */
-	public boolean signUp(String username, String password, String email) {
+	public Message generateSignUp(String username, String password, String email) {
 		System.out.println("Attempt to sign up");
+		return null;
+	}
+	
+	/*
+	 * Handles server response to sign up message
+	 * 
+	 * @param Message
+	 * @return true if user signed up properly
+	 */
+	public boolean handleSignUp(Message msg) {
 		return false;
 	}
 	
 	/*
-	 * Allows user to change account settings
-	 * @return true if changes are made
+	 * Generates message to request changes to account
+	 * can only change password or email
+	 * 
+	 * @param username
+	 * @param password
+	 * @param email
+	 * @return Message to be sent to server
 	 */
-	public boolean accountSettings() {
+	public Message generateAccountSettings() {
 		System.out.println("Attempt to edit accout Settings");
+		return null;
+	}
+	
+	/*
+	 * Handles the account setting response
+	 * 
+	 * @return true if account settings changed
+	 */
+	public boolean handleAccountSettings(Message msg) {
 		return false;
 	}
 	
-	
 	// File handling
-	public void viewUserFiles() {}
-	public void openFolder() {}
-	public void readFile() {}
-	public void uploadFile() {}
-	public void deleteItem() {}
-	public void download() {}
-	public void share() {}
+	public Message generateViewUserFiles() {return null;}
+	public boolean handleViewUserFiles(Message msg) {return false;}
+	public Message generateOpenFolder() {return null;}
+	public boolean handleOpenFolder(Message msg) {return false;}
+	public Message generateReadFile() {return null;}
+	public boolean handleReadFile(Message msg) {return false;}
+	public Message generateUploadFile() {return null;}
+	public boolean handleUploadFile(Message msg) {return false;}
+	public Message generateDeleteItem() {return null;}
+	public boolean handleDeleteItem(Message msg) {return false;}
+	public Message generateDownload() {return null;}
+	public boolean handleDownload(Message msg) {return false;}
+	public Message generateShare() {return null;}
+	public boolean handleShare(Message msg) {return false;}
 	
 }

@@ -12,6 +12,7 @@ import org.junit.Test;
 import com.team7.cs401.filestorage.client.ClientHelper;
 import com.team7.cs401.filestorage.client.Message;
 
+
 public class ClientHelperTest {
 	ClientHelper cHelper;
 	
@@ -38,6 +39,5 @@ public class ClientHelperTest {
 	public void test_generateSignUp_validMSG() {
 		
 	}
-	
 	
 }

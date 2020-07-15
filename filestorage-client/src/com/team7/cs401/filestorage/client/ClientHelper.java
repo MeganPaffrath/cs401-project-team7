@@ -24,6 +24,7 @@ public class ClientHelper {
 		System.out.println("Attempt to login");
 		Message msg = new Message("login", "pending", username, password);
 		return msg;
+
 	}
 	
 	

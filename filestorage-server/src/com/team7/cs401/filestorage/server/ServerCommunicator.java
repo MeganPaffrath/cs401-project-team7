@@ -1,6 +1,7 @@
 package com.team7.cs401.filestorage.server;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -41,6 +42,24 @@ public class ServerCommunicator {
             		byte[] message = new byte[mLength];
             		dIn.readFully(message, 0, message.length);
             		System.out.println("Server recieved: " + new String(message) );
+            		String sMessage = new String(message);
+            		if (sMessage.startsWith("LOGIN")) {
+
+                        String usernameAndPassword = sMessage.substring("LOGIN:".length());
+                        String [] inputs = usernameAndPassword.split(",");
+                        String username = inputs[0];
+                        String password = inputs[1];
+
+                        DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+                        if ("jimsmith".equals(username) && "1234".equals(password)) {
+                            // SUCCESS!
+                            dOut.write("success".getBytes("UTF-8"));
+                        } else {
+                            dOut.write("failure".getBytes("UTF-8"));
+                        }
+                    } else if (sMessage.startsWith("LOGOUT")) {
+            		    // TODO: Logout logic
+                    }
             	}
             	// Turn into listening function? ^^^^^
             } catch (Exception e) {
@@ -55,3 +74,4 @@ public class ServerCommunicator {
         }
     }
 }
+

@@ -20,9 +20,9 @@ public class ClientHelper {
 	 * @param password
 	 * @return message to be sent to server
 	 */
-	public Message generateLogin(String username, String password) {
+	public static Message generateLogin(String username, String password) {
 		System.out.println("Attempt to login");
-		Message msg = new Message("login", "pending", username, password);
+		Message msg = new Message("login", "requesting", username, password);
 		return msg;
 
 	}
@@ -34,8 +34,8 @@ public class ClientHelper {
 	 * @param Message
 	 * @return true if successful login
 	 */
-	public boolean handleLogin(Message msg) {
-		if (msg.getStatus().equalsIgnoreCase("success")) {
+	public static boolean handleLogin(Message msg) {
+		if (msg.getStatus().equalsIgnoreCase("valid")) {
 			return true;
 		}
 		return false;
@@ -46,7 +46,7 @@ public class ClientHelper {
 	 * 
 	 * @return Message
 	 */
-	public Message logout() {
+	public static Message logout() {
 		System.out.println("Attempt to logout");
 		return null;
 	}
@@ -59,7 +59,7 @@ public class ClientHelper {
 	 * @param email
 	 * @return Message to be sent to server
 	 */
-	public Message generateSignUp(String username, String password, String email) {
+	public static Message generateSignUp(String username, String password, String email) {
 		System.out.println("Attempt to sign up");
 		return null;
 	}
@@ -68,10 +68,14 @@ public class ClientHelper {
 	 * Handles server response to sign up message
 	 * 
 	 * @param Message
-	 * @return true if user signed up properly
+	 * @return true if user signed up properly (status <valid>)
 	 */
-	public boolean handleSignUp(Message msg) {
-		return false;
+	public static boolean handleSignUp(Message msg) {
+		if (msg.getStatus() == "valid") {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/*
@@ -83,9 +87,10 @@ public class ClientHelper {
 	 * @param email
 	 * @return Message to be sent to server
 	 */
-	public Message generateAccountSettings() {
+	public static Message generateAccountSettings(String username, String password, String email) {
 		System.out.println("Attempt to edit accout Settings");
-		return null;
+		Message msg = new Message("settings", "requesting", username, password, email);
+		return msg;
 	}
 	
 	/*
@@ -93,24 +98,24 @@ public class ClientHelper {
 	 * 
 	 * @return true if account settings changed
 	 */
-	public boolean handleAccountSettings(Message msg) {
+	public static boolean handleAccountSettings(Message msg) {
 		return false;
 	}
 	
 	// File handling
-	public Message generateViewUserFiles() {return null;}
-	public boolean handleViewUserFiles(Message msg) {return false;}
-	public Message generateOpenFolder() {return null;}
-	public boolean handleOpenFolder(Message msg) {return false;}
-	public Message generateReadFile() {return null;}
-	public boolean handleReadFile(Message msg) {return false;}
-	public Message generateUploadFile() {return null;}
-	public boolean handleUploadFile(Message msg) {return false;}
-	public Message generateDeleteItem() {return null;}
-	public boolean handleDeleteItem(Message msg) {return false;}
-	public Message generateDownload() {return null;}
-	public boolean handleDownload(Message msg) {return false;}
-	public Message generateShare() {return null;}
-	public boolean handleShare(Message msg) {return false;}
+	public static Message generateViewUserFiles() {return null;}
+	public static boolean handleViewUserFiles(Message msg) {return false;}
+	public static Message generateOpenFolder() {return null;}
+	public static boolean handleOpenFolder(Message msg) {return false;}
+	public static Message generateReadFile() {return null;}
+	public static boolean handleReadFile(Message msg) {return false;}
+	public static Message generateUploadFile() {return null;}
+	public static boolean handleUploadFile(Message msg) {return false;}
+	public static Message generateDeleteItem() {return null;}
+	public static boolean handleDeleteItem(Message msg) {return false;}
+	public static Message generateDownload() {return null;}
+	public static boolean handleDownload(Message msg) {return false;}
+	public static Message generateShare() {return null;}
+	public static boolean handleShare(Message msg) {return false;}
 	
 }

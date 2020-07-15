@@ -31,8 +31,6 @@ public class ClientCommunicator {
         try (var socket = new Socket(args[0], 1234)) {
             System.out.println("Enter lines of text then Ctrl+D or Ctrl+C to quit");
             
-            ClientHelper cHelper = new ClientHelper(socket);
-            
             // User input and function calls
             Boolean running = true;
 //            while (running) {
@@ -54,7 +52,8 @@ public class ClientCommunicator {
                 		System.out.println("TRY TO UPLOAD A FILE");
                 		break;
                 	case OTHER:
-                		cHelper.sendToServer("test send");
+//                		cHelper.sendToServer("test send");
+                		System.out.println("other section");
                 		break;
                 	default:
                 		System.out.println("Something went wrong.");

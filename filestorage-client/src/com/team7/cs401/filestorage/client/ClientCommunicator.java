@@ -28,26 +28,35 @@ public class ClientCommunicator {
             System.out.println("Enter lines of text then Ctrl+D or Ctrl+C to quit");
             
             ClientHelper cHelper = new ClientHelper(socket);
+            Scanner scan = new Scanner(System.in);
             
             // User input and function calls
             Boolean running = true;
-//            while (running) {
-            	/*
-                 * HAVE USER MAKE NEXT SELECTION
-                 * MAKE A LOOP OF THIS SECTION AND THE SWITCH STATEMENT BELOW
-                 */
-                
-                // Allow for various actions based on user input?
-                UserSelection selection = UserSelection.OTHER;
+            while (running) {
+           
+            	scan = new Scanner(System.in);
+            	int choice = scan.nextInt();
+				scan.nextLine();
+				 
+                UserSelection selection = UserSelection.values()[choice];
                 switch(selection) {
                 	case LOGIN:
                 		System.out.println("LOGIN");
+                		cHelper.login("jim", "12345");
                 		break;
+                		
+                	case SIGNUP:
+                		System.out.println("SIGNUP");
+                		cHelper.signUp("kim", "12345", "kim@gmail.com");
+                		break;
+                	
                 	case LOGOUT:
                 		System.out.println("LOGOUT");
+                		cHelper.logout();
                 		break;
                 	case UPLOAD:
                 		System.out.println("TRY TO UPLOAD A FILE");
+                		cHelper.uploadFile();
                 		break;
                 	case OTHER:
                 		cHelper.sendToServer("test send");
@@ -55,7 +64,7 @@ public class ClientCommunicator {
                 	default:
                 		System.out.println("Something went wrong.");
                 }
-//            }
+           }
             
         }
     }

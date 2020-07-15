@@ -47,16 +47,19 @@ public class ClientHelper {
 	 * @param password
 	 * @return true if valid login and currUser set
 	 */
-	public boolean login(String username, String password) {
+	public boolean login(String username, String password) throws IOException {
 		System.out.println("Attempt to login");
+		sendToServer("LOGIN:" + username + ", " + password);
+		this.currUser = new CurrentUser(username);      // saved for logout
 		return false;
 	}
 	
 	/*
 	 * Logs user out
 	 */
-	public void logout() {
+	public void logout() throws IOException {
 		System.out.println("Attempt to logout");
+		sendToServer("LOGOUT:" + this.currUser.getUserName());
 	}
 	
 	/*

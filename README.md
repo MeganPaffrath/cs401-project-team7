@@ -45,3 +45,11 @@
 * See if server is still running: `lsof -nP +c 15 | grep LISTEN`
 * Look for running java programs: `ps -ax | grep java`
 * Kill a process: `kill -9 <process ID>`
+
+#### Server building
+* In Eclipse, right click on the filestorage-server project -> Build Path -> Configure Build Path
+* On the top of the window that opens, select Libraries then select Classpath
+* On the right, select Add Class Folder... and choose the 'bin' directory in the filstorage-client project
+* Select Ok, then Apply.
+* Start the filestorage-client (this will fail since the server isn't running). 
+* Start the filestorage-server, then the client as normal. 

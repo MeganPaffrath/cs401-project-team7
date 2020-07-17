@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.team7.cs401.filestorage.server.Message;
+import com.team7.cs401.filestorage.client.Message;
 import com.team7.cs401.filestorage.server.ServerHelper;
 
 public class ServerHelperTest {

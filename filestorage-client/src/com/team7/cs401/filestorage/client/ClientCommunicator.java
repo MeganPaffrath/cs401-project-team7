@@ -68,7 +68,9 @@ public class ClientCommunicator {
                 	
                 	// pass a login message to server
                 	messagesOut.clear();
-                	messagesOut.add(new Message("login", "incoming", username, password));
+                	Message loginMsg = ClientHelper.generateLogin(username, password);
+                	messagesOut.add(loginMsg);
+//                	messagesOut.add(new Message("login", "incoming", username, password));
                 	objOutStream.writeUnshared(messagesOut);
                     objOutStream.flush();
                     
@@ -107,6 +109,12 @@ public class ClientCommunicator {
             	switch(selection) {
 	            	case LOGOUT:
 	            		System.out.println("LOGOUT");
+	            		// pass a logout message to server
+//	                	messagesOut.clear();
+//	                	messagesOut.add(new Message("logout", "incoming", username, password));
+//	                	objOutStream.writeUnshared(messagesOut);
+//	                    objOutStream.flush();
+	                    
 	            		break;
 	            	case UPLOAD:
 	            		System.out.println("TRY TO UPLOAD A FILE");

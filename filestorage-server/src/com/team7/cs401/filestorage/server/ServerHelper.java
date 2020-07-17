@@ -7,12 +7,30 @@ public class ServerHelper {
 	 * @param Message
 	 * @return msg with staus "valid" if valid
 	 */
-	public static Message validateLogin(Message msg) {
+	private AllUsers allUsers = new AllUsers();
+
+	
+	public ServerHelper() {
+		allUsers.loadData("I:\\Summer2020\\Project\\Phase 3\\cs401-project-team7\\filestorage-server\\src\\AllUsers.txt");
+		
+		
+	}
+	
+	
+	public Message validateLogin(Message msg) {  //go back
 		String username = msg.getText1();
 		String password = msg.getText2();
 		
+		allUsers.getUser(username);
+		User user = allUsers.getUser(username);
+		if (user != null && user.getPassword().equals(password)) {
+			msg.setStatus("valid");
+		}
+		
+		/* create allusers instance
+		 * get user passing from clients
+		*/
 		// if valid user:
-		msg.setStatus("valid");
 		// otherwise dont change status
 		return msg;
 	}
@@ -25,6 +43,7 @@ public class ServerHelper {
 	 * @return msg with status "valid" if valid
 	 * 
 	 */
+	
 	public Message newUser(Message msg) {
 		// if valid user generated:
 		msg.setStatus("valid");

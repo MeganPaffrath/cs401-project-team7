@@ -18,14 +18,15 @@ public class ClientCommunicator {
 	// might need to change based on UI implementation ------v
 	private enum UserSelection {
 		LOGIN, SIGNUP, LOGOUT,
-		UPLOAD,
-		OTHER
-	}
+		UPLOAD, DOWNLOAD, SHARE,
+		DELETE, SETTING	
+		}
 	// -------------------------------------------------------^
 	
 	
 
-    public static void main(String[] args) throws Exception {
+    @SuppressWarnings("unchecked")
+	public static void main(String[] args) throws Exception {
     	CurrentUser user = new CurrentUser();
     	
         if (args.length != 1) {
@@ -95,14 +96,20 @@ public class ClientCommunicator {
             	UserSelection selection = UserSelection.LOGOUT;
             	
             	System.out.println("Input text to enter next test loop:");
-            	System.out.println("1: LOGOUT, 2: UPLOAD, 3: OTHER");
+            	System.out.println("\n\t1: LOGOUT \n\t2: UPLOAD \n\t3: DOWNLOAD \n\t4:SHARE \n\t5: DELETE \n\t6: CHANGE SETTINGS ");
             	String select = myScnr.nextLine();
             	if (select == "1") {
             		selection = UserSelection.LOGOUT;
             	} else if (select == "2") {
             		selection = UserSelection.UPLOAD;
             	} else if (select == "3") {
-            		selection = UserSelection.OTHER;
+            		selection = UserSelection.DOWNLOAD;
+            	} else if (select == "4") {
+            		selection = UserSelection.SHARE;
+            	} else if (select == "5") {
+            		selection = UserSelection.DELETE;
+            	} else if (select == "7") {
+            		selection = UserSelection.SETTING;
             	}
             	
             	// Current test selection: 
@@ -129,9 +136,21 @@ public class ClientCommunicator {
 	            	case UPLOAD:
 	            		System.out.println("TRY TO UPLOAD A FILE");
 	            		break;
-	            	case OTHER:
+	            	case DOWNLOAD:
 	//            		cHelper.sendToServer("test send");
-	            		System.out.println("other section");
+	            		System.out.println("TRY TO DOWNLOAD A FILE");
+	            		break;
+	            	case SHARE:
+	//            		cHelper.sendToServer("test send");
+	            		System.out.println("TRY TO SHARE A FILE");
+	            		break;
+	            	case DELETE:
+	//            		cHelper.sendToServer("test send");
+	            		System.out.println("TRY TO DELETE A FILE");
+	            		break;
+	            	case SETTING:
+	//            		cHelper.sendToServer("test send");
+	            		System.out.println("TRY TO SHARE A FILE WITH OTHER USERS");
 	            		break;
 	            	default:
 	            		System.out.println("Something went wrong.");

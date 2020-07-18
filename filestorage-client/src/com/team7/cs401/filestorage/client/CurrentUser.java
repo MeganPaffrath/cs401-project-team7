@@ -5,11 +5,7 @@ public class CurrentUser {
 	private String userName;
 	private boolean loggedIn;
 	
-<<<<<<< HEAD
-	public CurrentUser(String user) {
-		this.setUserName(user);
-		setLoggedIn(true);
-=======
+
 	public CurrentUser() {
 		this.userName = null;
 		this.loggedIn = false;
@@ -18,7 +14,7 @@ public class CurrentUser {
 	public CurrentUser(String user) {
 		this.userName = user;
 		this.loggedIn = true;
->>>>>>> 3fe4ad765b7fa3b60e7a866ef414ca5e43cf8b04
+
 	}
 
 	public String getUserName() {

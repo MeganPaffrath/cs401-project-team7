@@ -1,4 +1,5 @@
 package com.team7.cs401.filestorage.server;
+import com.team7.cs401.filestorage.client.Message;
 
 public class ServerHelper {
 	/*

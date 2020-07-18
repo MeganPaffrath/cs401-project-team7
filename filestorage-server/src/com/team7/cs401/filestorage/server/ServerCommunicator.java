@@ -96,21 +96,15 @@ public class ServerCommunicator {
                                 objOutStream.flush();
                                 System.out.println("Failure message sent.");
                     		}
-                    	} else if (msg.getType().equalsIgnoreCase("text message")) { // TEXT MESSAGE
-                    		System.out.println("Recieved text msg");
-                    		// Capitalize message
-                    		msg.setText1(msg.getText1().toUpperCase());
-                    			
-                			// Send msg back
-                            messagesOut.add(msg);
-                            
-                            System.out.println("Sending capitalized message: " + msg.getText1());
-                            objOutStream.writeUnshared(messagesOut);
-                            objOutStream.flush();
+                    	} else if (msg.getType().equalsIgnoreCase("OTHER")) { // this is where the other msgs will go
+                    		
                     	} else if (msg.getType().equalsIgnoreCase("logout")) {
                     		System.out.println("Recieved logout");
                     		
                     		// log out
+                    		/*
+                    		 * IF KEEPING TRACK OF CURRENT USERS, REMOVE THIS USER
+                    		 */
                     		loggedOut = true;
                     		break;
                     	} else {

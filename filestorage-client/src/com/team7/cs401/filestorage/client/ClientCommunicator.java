@@ -110,11 +110,21 @@ public class ClientCommunicator {
 	            	case LOGOUT:
 	            		System.out.println("LOGOUT");
 	            		// pass a logout message to server
-//	                	messagesOut.clear();
-//	                	messagesOut.add(new Message("logout", "incoming", username, password));
-//	                	objOutStream.writeUnshared(messagesOut);
-//	                    objOutStream.flush();
+	                	messagesOut.clear();
+	                	Message logoutMsg = ClientHelper.logout(user);
+	                	messagesOut.add(logoutMsg);
+	                	objOutStream.writeUnshared(messagesOut);
+	                    objOutStream.flush();
 	                    
+	                    // end
+	                    // receive "response"
+	                    try {
+	                    	messagesIn = (List<Message>) objInStream.readObject();
+	                    	messagesIn.removeAll(messagesIn);
+	                    } catch (Exception e) {
+	                    	System.out.println("Logging out");
+	                    	running = false;
+	                    }
 	            		break;
 	            	case UPLOAD:
 	            		System.out.println("TRY TO UPLOAD A FILE");

@@ -21,27 +21,30 @@ public class Message implements Serializable {
     }
 
     public Message(String type, String status, String text){
-        setType(type);
-        setStatus(status);
-        setText1(text);
+    	this.type = type;
+    	this.status = status;
+    	this.text1 = text;
     }
     
-    public Message(String type, String status, String text, String text2){
-        setType(type);
-        setStatus(status);
-        setText1(text);
-        setText2(text2);
-    }
-    public Message(String type, String status, String text, String text2, String text3){
-        setType(type);
-        setStatus(status);
-        setText1(text);
-        setText2(text2);
-        setText3(text3);
-    }
-
-    private void setType(String type){
+    public Message(String type, String status, String text1, String text2){
     	this.type = type;
+    	this.status = status;
+    	this.text1 = text1;
+    	this.text2 = text2;
+    }
+    public Message(String type, String status, String text1, String text2, String text3){
+    	this.type = type;
+    	this.status = status;
+    	this.text1 = text1;
+    	this.text2 = text2;
+    	this.text3 = text3;
+    }
+    public Message(String type, String status, String text1, String text2, String[] textArr){
+    	this.type = type;
+    	this.status = status;
+    	this.text1 = text1;
+    	this.text2 = text2;
+    	this.textArray = textArr;
     }
 
     public void setStatus(String status){
@@ -81,3 +84,5 @@ public class Message implements Serializable {
     }
 
 }
+
+

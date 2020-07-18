@@ -46,9 +46,10 @@ public class ClientHelper {
 	 * 
 	 * @return Message
 	 */
-	public static Message logout() {
-		System.out.println("Attempt to logout");
-		return null;
+	public static Message logout(CurrentUser user) {
+		System.out.println("Logout method called");
+		Message msg = new Message("logout", "requesting", user.getUserName());
+		return msg;
 	}
 	
 	/*

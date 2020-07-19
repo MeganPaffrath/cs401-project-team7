@@ -55,13 +55,13 @@ public class ClientHelperTest {
 		assertFalse("Status <valid> should be a successful signup.", signUp);
 	}
 	
-	@Test
-	public void test_generateAccountSettings_goodMSG() {
-		Message msg = ClientHelper.generateAccountSettings("user", "pass", "email");
-		assertEquals("text1 should be <username>", "user", msg.getText1());
-		assertEquals("text2 should be <password>", "pass", msg.getText2());
-		assertEquals("text3 should be <email>", "email", msg.getText3());
-
-	}
+//	@Test
+//	public void test_generateAccountSettings_goodMSG() {
+//		Message msg = ClientHelper.generateAccountSettings("user", "pass", "email");
+//		assertEquals("text1 should be <username>", "user", msg.getText1());
+//		assertEquals("text2 should be <password>", "pass", msg.getText2());
+//		assertEquals("text3 should be <email>", "email", msg.getText3());
+//
+//	}
 	
 }

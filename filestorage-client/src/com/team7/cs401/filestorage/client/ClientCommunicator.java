@@ -58,17 +58,18 @@ public class ClientCommunicator {
         	// User input loop:
             Boolean running = true;
             boolean loggedIn = false;
-            String signupLogin = 0;
+            String signupLogin;
             while(running) {
             	// First make user log in:
             	while(!user.isLoggedIn()) {
             		while(true) {
 	            		System.out.println(":: FILE STORAGE SYSTEM ::\n1) Sign Up\n2) Login\n:\t");
 	            		signupLogin = myScnr.nextLine();
-	            		if(signupLogin == "1" || signupLogin == "2")
+	            		if(signupLogin.equals("1")  || signupLogin.equals("2"))
 	            			break;
             		}
-            		if(signupLogin == "1") {
+            		if(signupLogin.equals("1") ) { // THIS DOES NOT WORK YET. NEED TO ADD IN ERROR CHECKING AS WELL AS FIX
+            			System.out.println("This doesn't work yet. This will need to be fixed.");
             			System.out.println("Username:\t");
             			String username = myScnr.nextLine();
             			String email;
@@ -99,7 +100,7 @@ public class ClientCommunicator {
 	                    		System.out.println("\nFailed to Create an account!");
 	                    	}
 	                    }
-            		}else {
+            		} else { // signupLogin.equals("2")
             		
 	            		// Get username and password
 	            		System.out.println("username:");

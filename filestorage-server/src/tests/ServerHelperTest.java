@@ -22,7 +22,4 @@ public class ServerHelperTest {
 		Message msg = ServerHelper.validateLogin(inMsg);
 		assertNotEquals("An invalid login should NOT set the status to <valid>", "valid", msg.getStatus());
 	}
-	
-	
-
 }

@@ -1,5 +1,6 @@
 package com.team7.cs401.filestorage.client;
 
+import java.awt.Desktop;
 import java.io.*;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -140,19 +141,17 @@ public class ClientCommunicator {
             	System.out.println("Input text to enter next test loop:");
             	System.out.println("\n\t1: LOGOUT \n\t2: UPLOAD \n\t3: DOWNLOAD \n\t4:SHARE \n\t5: DELETE \n\t6: CHANGE SETTINGS ");
             	String select = myScnr.nextLine();
-            	if (select == "1") {
+            	if (select.equals("1")) {
             		selection = UserSelection.LOGOUT;
-            	}else if (select == "2") {
-            		selection = UserSelection.VIEWFILES;
-            	}else if (select == "3") {
+            	}else if (select.equals("2")) {
             		selection = UserSelection.UPLOAD;
-            	} else if (select == "4") {
+            	} else if (select.equals("3")) {
             		selection = UserSelection.DOWNLOAD;
-            	} else if (select == "5") {
+            	} else if (select.equals("4")) {
             		selection = UserSelection.SHARE;
-            	} else if (select == "6") {
+            	} else if (select.equals("5")) {
             		selection = UserSelection.DELETE;
-            	} else if (select == "7") {
+            	} else if (select.equals("6")) {
             		selection = UserSelection.SETTING;
             	}
             	
@@ -182,6 +181,55 @@ public class ClientCommunicator {
 	            		break;
 	            	case UPLOAD:
 	            		System.out.println("TRY TO UPLOAD A FILE");
+	            		
+	            		// Get the file
+	            		System.out.println("Input file name: ");
+	            		String fileName = myScnr.nextLine();
+//	            		File folder = new File("/userdir");
+	            		File file = null;
+	            		try {
+	            			file = new File("userdir/" + fileName);
+	            			if (file.exists() ) {
+	            				// opens the file
+//	            				Desktop desktop = Desktop.getDesktop();
+//	            				desktop.open(file);
+	            			}
+	            			
+	            			// turn file into byte array
+	            			byte[] byteArr = new byte[ (int) file.length()];
+	            			FileInputStream fis = new FileInputStream(file);
+	            			fis.read(byteArr); // convert to bytes
+	            			fis.close();
+	            			
+	            			// make the message
+	            			Message msg = new Message("file", "status", "testUser", "UUID", byteArr);
+//	            			Message msg = ClientHelper.generateUploadFile(user, file);
+	            			
+	            			// send the message
+	            			messagesOut.clear();
+		                	messagesOut.add(msg);
+		                	objOutStream.writeUnshared(messagesOut);
+		                    objOutStream.flush();
+		                    
+		                    // rec response
+		                    messagesIn = (List<Message>) objInStream.readObject();
+		                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+		                    
+		                    // for each recieved msg, process and test for successful login
+		                    for (Message m : messagesIn) {
+		                    	// if valid login
+		                    	if (ClientHelper.handleLogin(m) ) {
+		                    		user.setUserName(m.getText1());
+		                    		user.login();
+		                    		messagesIn.removeAll(messagesIn);
+		                    		break;
+		                    	}
+		                    }
+	            			
+	            			
+	            		} catch (Exception e) {
+	            			System.out.println("File does not exist");
+	            		}
 	            		break;
 	            	case DOWNLOAD:
 	//            		cHelper.sendToServer("test send");

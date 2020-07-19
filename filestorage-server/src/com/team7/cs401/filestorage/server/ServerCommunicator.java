@@ -1,5 +1,6 @@
 package com.team7.cs401.filestorage.server;
 
+import java.awt.Desktop;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -96,6 +97,37 @@ public class ServerCommunicator {
                                 objOutStream.flush();
                                 System.out.println("Failure message sent.");
                     		}
+                    	} else if (msg.getType().equalsIgnoreCase("file")) { // File message
+                    		System.out.println("Recieved a file");
+                			
+                			// try to open the recieved file
+                    		byte[] fileBytes = msg.getFileBytes();
+                    		// plan the filepath
+                    		File recFile = new File("allfiles/recText.txt");
+                    		
+                    		try {
+                    			OutputStream os = new FileOutputStream(recFile);
+                    			// write bytes to recFile
+                    			os.write(fileBytes);
+                    			os.close();
+                    		} catch (Exception e) {
+                    			System.out.print("Exception: " + e);
+                    		}
+                    		
+                    		// turn byte array into a file
+                    		
+                    		
+            				// opens the file
+            				Desktop desktop = Desktop.getDesktop();
+            				desktop.open(recFile);
+                			
+                			// Send msg back : upload validation
+                			Message msgR = new Message("upload", "valid", "user", "UUID:");
+                            messagesOut.add(msgR);
+                            objOutStream.writeUnshared(messagesOut);
+                            objOutStream.flush();
+                            System.out.println("Upload msg sent");
+
                     	} else if (msg.getType().equalsIgnoreCase("OTHER")) { // this is where the other msgs will go
                     		
                     	} else if (msg.getType().equalsIgnoreCase("logout")) {

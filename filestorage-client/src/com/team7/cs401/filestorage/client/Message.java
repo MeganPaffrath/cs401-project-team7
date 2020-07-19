@@ -26,8 +26,6 @@ public class Message implements Serializable {
     	this.type = type;
     	this.status = status;
     	this.text1 = text;
-    	this.text2 = "Undefined";
-        this.text3 = "Undefined";
     }
     
     public Message(String type, String status, String text1, String text2){
@@ -35,7 +33,6 @@ public class Message implements Serializable {
     	this.status = status;
     	this.text1 = text1;
     	this.text2 = text2;
-    	this.text3 = "Undefined";
     }
     public Message(String type, String status, String text1, String text2, String text3){
     	this.type = type;

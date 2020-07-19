@@ -17,15 +17,16 @@ import java.util.List;
 public class ClientCommunicator {
 	// might need to change based on UI implementation ------v
 	private enum UserSelection {
-		LOGIN, SIGNUP, LOGOUT,
-		UPLOAD,
-		OTHER
-	}
+		LOGIN, SIGNUP, LOGOUT, VIEWFILES,
+		UPLOAD, DOWNLOAD, SHARE,
+		DELETE, SETTING	
+		}
 	// -------------------------------------------------------^
 	
 	
 
-    public static void main(String[] args) throws Exception {
+
+	public static void main(String[] args) throws Exception {
     	CurrentUser user = new CurrentUser();
     	
         if (args.length != 1) {
@@ -57,37 +58,78 @@ public class ClientCommunicator {
         	// User input loop:
             Boolean running = true;
             boolean loggedIn = false;
+            String signupLogin = 0;
             while(running) {
             	// First make user log in:
             	while(!user.isLoggedIn()) {
-            		// Get username and password
-            		System.out.println("username:");
-                	String username = myScnr.nextLine();
-                	System.out.println("password:");
-                	String password = myScnr.nextLine();
-                	
-                	// pass a login message to server
-                	messagesOut.clear();
-                	Message loginMsg = ClientHelper.generateLogin(username, password);
-                	messagesOut.add(loginMsg);
-//                	messagesOut.add(new Message("login", "incoming", username, password));
-                	objOutStream.writeUnshared(messagesOut);
-                    objOutStream.flush();
-                    
-                    // rec response
-                    messagesIn = (List<Message>) objInStream.readObject();
-                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
-                    
-                    // for each recieved msg, process and test for successful login
-                    for (Message msg : messagesIn) {
-                    	// if valid login
-                    	if (ClientHelper.handleLogin(msg) ) {
-                    		user.setUserName(msg.getText1());
-                    		user.login();
-                    		messagesIn.removeAll(messagesIn);
-                    		break;
-                    	}
-                    }
+            		while(true) {
+	            		System.out.println(":: FILE STORAGE SYSTEM ::\n1) Sign Up\n2) Login\n:\t");
+	            		signupLogin = myScnr.nextLine();
+	            		if(signupLogin == "1" || signupLogin == "2")
+	            			break;
+            		}
+            		if(signupLogin == "1") {
+            			System.out.println("Username:\t");
+            			String username = myScnr.nextLine();
+            			String email;
+            			while(true) {
+	            			System.out.println("Email:\t");
+	            			email = myScnr.nextLine();
+	            			if(email.contains("@") && email.contains(".com") && email.indexOf("@") < email.indexOf(".com"))
+	            				break;
+            			}
+            			System.out.println("password:\t");
+            			String password = myScnr.nextLine();
+	                	messagesOut.clear();
+	                	Message signup_msg = ClientHelper.generateSignUp(username, password, email);
+	                	messagesOut.add(signup_msg);
+	                	objOutStream.writeUnshared(messagesOut);
+	                    objOutStream.flush();
+	                    messagesIn = (List<Message>) objInStream.readObject();
+	                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+	                    
+	                    for (Message msg : messagesIn) {
+	                    	// if valid login
+	                    	if (ClientHelper.handleSignUp(msg) ) {
+	                    		messagesIn.removeAll(messagesIn);
+	                    		System.out.println("\nAccount successfully created!");
+	                    		break;
+	                    	}
+	                    	else {
+	                    		System.out.println("\nFailed to Create an account!");
+	                    	}
+	                    }
+            		}else {
+            		
+	            		// Get username and password
+	            		System.out.println("username:");
+	                	String username = myScnr.nextLine();
+	                	System.out.println("password:");
+	                	String password = myScnr.nextLine();
+	                	
+	                	// pass a login message to server
+	                	messagesOut.clear();
+	                	Message loginMsg = ClientHelper.generateLogin(username, password);
+	                	messagesOut.add(loginMsg);
+	                	//messagesOut.add(new Message("login", "incoming", username, password));
+	                	objOutStream.writeUnshared(messagesOut);
+	                    objOutStream.flush();
+	                    
+	                    // rec response
+	                    messagesIn = (List<Message>) objInStream.readObject();
+	                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+	                    
+	                    // for each recieved msg, process and test for successful login
+	                    for (Message msg : messagesIn) {
+	                    	// if valid login
+	                    	if (ClientHelper.handleLogin(msg) ) {
+	                    		user.setUserName(msg.getText1());
+	                    		user.login();
+	                    		messagesIn.removeAll(messagesIn);
+	                    		break;
+	                    	}
+	                    }
+            		}
 //                    messagesIn.removeAll(messagesIn);
             	}
             	
@@ -95,14 +137,22 @@ public class ClientCommunicator {
             	UserSelection selection = UserSelection.LOGOUT;
             	
             	System.out.println("Input text to enter next test loop:");
-            	System.out.println("1: LOGOUT, 2: UPLOAD, 3: OTHER");
+            	System.out.println("\n\t1: LOGOUT \n\t2: UPLOAD \n\t3: DOWNLOAD \n\t4:SHARE \n\t5: DELETE \n\t6: CHANGE SETTINGS ");
             	String select = myScnr.nextLine();
             	if (select == "1") {
             		selection = UserSelection.LOGOUT;
-            	} else if (select == "2") {
+            	}else if (select == "2") {
+            		selection = UserSelection.VIEWFILES;
+            	}else if (select == "3") {
             		selection = UserSelection.UPLOAD;
-            	} else if (select == "3") {
-            		selection = UserSelection.OTHER;
+            	} else if (select == "4") {
+            		selection = UserSelection.DOWNLOAD;
+            	} else if (select == "5") {
+            		selection = UserSelection.SHARE;
+            	} else if (select == "6") {
+            		selection = UserSelection.DELETE;
+            	} else if (select == "7") {
+            		selection = UserSelection.SETTING;
             	}
             	
             	// Current test selection: 
@@ -126,15 +176,60 @@ public class ClientCommunicator {
 	                    	running = false;
 	                    }
 	            		break;
+	            	case VIEWFILES:
+	            		System.out.println("TRY TO VIEW ALL THE FILES");
+	            		break;
 	            	case UPLOAD:
 	            		System.out.println("TRY TO UPLOAD A FILE");
 	            		break;
-	            	case OTHER:
+	            	case DOWNLOAD:
 	//            		cHelper.sendToServer("test send");
-	            		System.out.println("other section");
+	            		System.out.println("TRY TO DOWNLOAD A FILE");
+	            		break;
+	            	case SHARE:
+	//            		cHelper.sendToServer("test send");
+	            		System.out.println("TRY TO SHARE A FILE");
+	            		break;
+	            	case DELETE:
+	//            		cHelper.sendToServer("test send");
+	            		System.out.println("TRY TO DELETE A FILE");
+	            		break;
+	            	case SETTING:
+	//            		cHelper.sendToServer("test send");
+	            		System.out.println("CHANGE SETTING OF THE USER");
+	            		String acc_selection = "";
+	            		String password = "";
+	            		String email = "";
+	            		while(true) {
+		            		System.out.println("Account Settings:\n1) Change Password\n2) Change Email\n:\t");
+		            		acc_selection = myScnr.nextLine();
+		            		if(acc_selection == "1" || acc_selection == "2")
+		            			break;
+	            		}
+	            		if(acc_selection == "1") {
+	            			System.out.println("Enter the new password: ");
+	            			password = myScnr.nextLine();
+	            			messagesOut.clear();
+		                	Message password_msg = ClientHelper.generatePasswordChange(user.getUserName(), password);
+		                	messagesOut.add(password_msg);
+	            		}else {
+	            			// loops till the proper email address is entered by the user
+	            			while(true) {
+		            			System.out.println("Enter the new email address: ");
+		            			email = myScnr.nextLine();
+		            			if(email.contains("@") && email.contains(".com") && email.indexOf("@") < email.indexOf(".com"))
+		            				break;
+		            			else
+		            				System.out.println("\nPlease enter the correct email address!\n");
+	            			}
+	            			messagesOut.clear();
+		                	Message email_msg = ClientHelper.generateEmailChange(user.getUserName(), email);
+		                	messagesOut.add(email_msg);
+	            		}
 	            		break;
 	            	default:
 	            		System.out.println("Something went wrong.");
+	            	myScnr.close();
             	}
             }
         }
@@ -150,3 +245,4 @@ public class ClientCommunicator {
 
 
             
+

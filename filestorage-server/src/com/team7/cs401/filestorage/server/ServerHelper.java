@@ -53,5 +53,6 @@ public class ServerHelper {
 	 * @param Message
 	 * @return Message with status "success"
 	 */
-	public Message changeAccountSettings(Message msg) {return null;}
+	public Message changePassword(Message msg) {return null;}
+	public Message changeEmail(Message msg) {return null;}
 }

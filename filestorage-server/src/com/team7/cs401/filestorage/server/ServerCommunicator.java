@@ -1,14 +1,20 @@
 package com.team7.cs401.filestorage.server;
 
+import java.awt.Desktop;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
+
+import com.team7.cs401.filestorage.client.FileHandler;
 import com.team7.cs401.filestorage.client.Message;
 
 
@@ -96,6 +102,29 @@ public class ServerCommunicator {
                                 objOutStream.flush();
                                 System.out.println("Failure message sent.");
                     		}
+                    	} else if (msg.getType().equalsIgnoreCase("file")) { // File message
+                    		System.out.println("Recieved a file");
+                			
+                			// get received file
+                    		byte[] fileBytes = msg.getFileBytes();
+                    		// plan the file path
+                    		Path path = Paths.get("allfiles/" + msg.getText1());
+                    		Files.createDirectories(path);
+                    		File recFile = new File(path + "/" + msg.getText2());
+                    		// convert bytes to file
+                    		FileHandler.byteArrToFile(recFile, fileBytes);
+
+            				// opens the file
+            				Desktop desktop = Desktop.getDesktop();
+            				desktop.open(recFile);
+                			
+                			// Send msg back : upload validation
+                			Message msgR = new Message("upload", "valid", "user", "UUID:");
+                            messagesOut.add(msgR);
+                            objOutStream.writeUnshared(messagesOut);
+                            objOutStream.flush();
+                            System.out.println("Upload msg sent");
+
                     	} else if (msg.getType().equalsIgnoreCase("OTHER")) { // this is where the other msgs will go
                     		
                     	} else if (msg.getType().equalsIgnoreCase("logout")) {

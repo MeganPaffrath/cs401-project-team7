@@ -1,5 +1,6 @@
 package com.team7.cs401.filestorage.client;
 
+import java.awt.Desktop;
 import java.io.*;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 
 public class ClientCommunicator {
+	
 	// might need to change based on UI implementation ------v
 	private enum UserSelection {
 		LOGIN, SIGNUP, LOGOUT, VIEWFILES,
@@ -140,19 +142,17 @@ public class ClientCommunicator {
             	System.out.println("Input text to enter next test loop:");
             	System.out.println("\n\t1: LOGOUT \n\t2: UPLOAD \n\t3: DOWNLOAD \n\t4:SHARE \n\t5: DELETE \n\t6: CHANGE SETTINGS ");
             	String select = myScnr.nextLine();
-            	if (select == "1") {
+            	if (select.equals("1")) {
             		selection = UserSelection.LOGOUT;
-            	}else if (select == "2") {
-            		selection = UserSelection.VIEWFILES;
-            	}else if (select == "3") {
+            	}else if (select.equals("2")) {
             		selection = UserSelection.UPLOAD;
-            	} else if (select == "4") {
+            	} else if (select.equals("3")) {
             		selection = UserSelection.DOWNLOAD;
-            	} else if (select == "5") {
+            	} else if (select.equals("4")) {
             		selection = UserSelection.SHARE;
-            	} else if (select == "6") {
+            	} else if (select.equals("5")) {
             		selection = UserSelection.DELETE;
-            	} else if (select == "7") {
+            	} else if (select.equals("6")) {
             		selection = UserSelection.SETTING;
             	}
             	
@@ -182,6 +182,53 @@ public class ClientCommunicator {
 	            		break;
 	            	case UPLOAD:
 	            		System.out.println("TRY TO UPLOAD A FILE");
+	            		
+	            		// Get the file
+	            		System.out.println("Input file name: ");
+	            		String filename = myScnr.nextLine();
+	            		String filePath = "userdir/" + filename;
+	            		
+	            		File file = null;
+	            		
+	            		// make msg, send, and rec response
+	            		try {
+	            			// convert file to byte array
+	            			byte[] byteArr = FileHandler.fileToByteArr(filePath);
+	            			
+	            			// make the message (null UUID because UUID does not exist yet)
+//	            			Message msg = new Message("file", "requesting", user.getUserName(), filename, null, byteArr);
+	            			Message msg =  ClientHelper.generateUpload(user, filename, byteArr);
+	            			System.out.println("message made");
+	            			
+	            			// send the message
+	            			messagesOut.clear();
+		                	messagesOut.add(msg);
+		                	objOutStream.writeUnshared(messagesOut);
+		                    objOutStream.flush();
+		                    
+		                    // rec response
+		                    messagesIn = (List<Message>) objInStream.readObject();
+		                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+		                    
+		                    // for each recieved msg, check if valid
+		                    for (Message m : messagesIn) {
+		                    	// if valid login
+		                    	if (m.getType().equals("upload")) {
+		                    		if (m.getStatus().equals("valid")) {
+		                    			System.out.println("Server got file");
+		                    		} else {
+		                    			System.out.println("Server failed to get file");
+		                    		}
+		                    		
+		                    		messagesIn.removeAll(messagesIn);
+		                    		break;
+		                    	}
+		                    }
+	            			
+	            			
+	            		} catch (Exception e) {
+	            			System.out.println("File does not exist");
+	            		}
 	            		break;
 	            	case DOWNLOAD:
 	//            		cHelper.sendToServer("test send");
@@ -241,6 +288,7 @@ public class ClientCommunicator {
         System.out.println("Status: " + msg.getStatus());
         System.out.println("Text: " + msg.getText1());
     }
+  
 }
 
 

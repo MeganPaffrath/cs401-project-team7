@@ -74,7 +74,7 @@ public class ClientHelper {
 	 * @return true if user signed up properly (status <valid>)
 	 */
 	public static boolean handleSignUp(Message msg) {
-		if (msg.getStatus() == "valid") {
+		if (msg.getStatus().equals("valid")) {
 			return true;
 		} else {
 			return false;
@@ -102,7 +102,7 @@ public class ClientHelper {
 	 * @return true if account settings changed
 	 */
 	public static boolean handlePasswordChange(Message msg) {
-		if (msg.getStatus() == "valid") {
+		if (msg.getStatus().equals("valid")) {
 			return true;
 		} else {
 			return false;
@@ -121,7 +121,7 @@ public class ClientHelper {
 	 * @return true if account settings changed
 	 */
 	public static boolean handleEmailChange(Message msg) {
-		if (msg.getStatus() == "valid") {
+		if (msg.getStatus().equals("valid")) {
 			return true;
 		} else {
 			return false;
@@ -136,7 +136,7 @@ public class ClientHelper {
 	}
 	
 	public static boolean handleViewUserFiles(Message msg)  {
-		if (msg.getStatus() == "valid") {
+		if (msg.getStatus().equals("valid")) {
 			return true;
 		} else {
 			return false;
@@ -150,7 +150,7 @@ public class ClientHelper {
 		return msg;
 	}
 	public static boolean handleOpenFolder(Message msg) {
-		if (msg.getStatus() == "valid") {
+		if (msg.getStatus().equals("valid")) {
 			return true;
 		} else {
 			return false;
@@ -161,25 +161,25 @@ public class ClientHelper {
 		System.out.println("generateReadFile method called");
 		Message msg = new Message("openFolder", "requesting", user.getUserName(), fileId);
 		return msg;
-		}
+	}
+	
 	public static boolean handleReadFile(Message msg) {	
-		if (msg.getStatus() == "valid") {
+		if (msg.getStatus().equals("valid")) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-		// NOTE: I'm not sure if this is the right way
-	public static Message generateUploadFile(CurrentUser user, byte[] file) {
-		System.out.println("generateUploadFile method called");
-		Message msg = new Message("uploadFile", "requesting", user.getUserName(), file);
+	public static Message generateUpload(CurrentUser user, String filename, byte[] fileBytes) {
+		System.out.println("generateUpload method called");
+		Message msg = new Message("file", "requesting", user.getUserName(), filename, null, fileBytes);
 		return msg;
 	}
 
 	
 	public static boolean handleUploadFile(Message msg) {
-		if (msg.getStatus() == "valid") {
+		if (msg.getStatus().equals("valid")) {
 			return true;
 		} else {
 			return false;
@@ -192,7 +192,7 @@ public class ClientHelper {
 		return msg;
 	}
 	public static boolean handleDeleteItem(Message msg) {
-		if (msg.getStatus() == "valid") {
+		if (msg.getStatus().equals("valid")) {
 			return true;
 		} else {
 			return false;
@@ -205,7 +205,7 @@ public class ClientHelper {
 		return msg;
 	}
 	public static boolean handleDownload(Message msg) {
-		if (msg.getStatus() == "valid") {
+		if (msg.getStatus().equals("valid")) {
 			return true;
 		} else {
 			return false;
@@ -219,7 +219,7 @@ public class ClientHelper {
 	}
 	
 	public static boolean handleShare(Message msg) {
-		if (msg.getStatus() == "valid") {
+		if (msg.getStatus().equals("valid")) {
 			return true;
 		} else {
 			return false;

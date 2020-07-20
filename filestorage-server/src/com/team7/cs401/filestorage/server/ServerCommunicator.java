@@ -105,7 +105,7 @@ public class ServerCommunicator {
                     	} else if (msg.getType().equalsIgnoreCase("file")) { // File message
                     		System.out.println("Recieved a file");
                 			
-                			// get recieved file
+                			// get received file
                     		byte[] fileBytes = msg.getFileBytes();
                     		// plan the file path
                     		Path path = Paths.get("allfiles/" + msg.getText1());

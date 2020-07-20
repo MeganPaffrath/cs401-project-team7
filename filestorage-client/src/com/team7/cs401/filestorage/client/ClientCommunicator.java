@@ -195,8 +195,10 @@ public class ClientCommunicator {
 	            			// convert file to byte array
 	            			byte[] byteArr = FileHandler.fileToByteArr(filePath);
 	            			
-	            			// make the message
-	            			Message msg = new Message("file", "status", "testUser", filename, "UUID", byteArr);
+	            			// make the message (null UUID because UUID does not exist yet)
+//	            			Message msg = new Message("file", "requesting", user.getUserName(), filename, null, byteArr);
+	            			Message msg =  ClientHelper.generateUpload(user, filename, byteArr);
+	            			System.out.println("message made");
 	            			
 	            			// send the message
 	            			messagesOut.clear();
@@ -208,12 +210,16 @@ public class ClientCommunicator {
 		                    messagesIn = (List<Message>) objInStream.readObject();
 		                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
 		                    
-		                    // for each recieved msg, process and test for successful login
+		                    // for each recieved msg, check if valid
 		                    for (Message m : messagesIn) {
 		                    	// if valid login
-		                    	if (ClientHelper.handleLogin(m) ) {
-		                    		user.setUserName(m.getText1());
-		                    		user.login();
+		                    	if (m.getType().equals("upload")) {
+		                    		if (m.getStatus().equals("valid")) {
+		                    			System.out.println("Server got file");
+		                    		} else {
+		                    			System.out.println("Server failed to get file");
+		                    		}
+		                    		
 		                    		messagesIn.removeAll(messagesIn);
 		                    		break;
 		                    	}

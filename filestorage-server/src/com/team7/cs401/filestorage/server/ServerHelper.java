@@ -1,4 +1,9 @@
 package com.team7.cs401.filestorage.server;
+import java.awt.Desktop;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import com.team7.cs401.filestorage.client.ClientHelper;
@@ -44,8 +49,35 @@ public class ServerHelper {
 	 */
 	public static void logout(Message msg) {}
 	
+	/*
+	 * @param msg
+	 * @return Message showing if upload was vailid/invalid
+	 */
+	public static Message uploadValidation(Message msg) {
+		Message msgR;
+		try {
+			// get received file
+			byte[] fileBytes = msg.getFileBytes();
+			// plan the file path
+			Path path = Paths.get("allfiles/" + msg.getText1());
+			Files.createDirectories(path);
+			File recFile = new File(path + "/" + msg.getText2());
+			// convert bytes to file
+			FileHandler.byteArrToFile(recFile, fileBytes);
+
+			// opens the file
+			Desktop desktop = Desktop.getDesktop();
+			desktop.open(recFile);
+			
+			// Send msg back : upload validation
+			msgR = new Message("upload", "valid", "user", "UUID");
+		} catch (Exception e) {
+			msgR = new Message("upload", "invalid", "user", "UUID");
+		}
+		
+		return msgR;
+	}
 	
-	public static Message upload(Message msg) {return null;}
 	public static Message grantFileAccess(Message msg) {return null;}
 	
 	

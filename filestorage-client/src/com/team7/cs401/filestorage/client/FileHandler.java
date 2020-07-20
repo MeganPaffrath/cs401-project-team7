@@ -15,20 +15,20 @@ public class FileHandler {
 //			Desktop desktop = Desktop.getDesktop();
 //			desktop.open(file);
 		} else {
-			System.out.println("THE FILE DOES NOT EXIST: FileHandler.fileToByteArr failed");
+			System.out.println("THE FILE DOES NOT EXIST");
 		}
 		
 		// turn file into byte array
 		byte[] byteArr = null;
-		try {
-			byteArr = new byte[ (int) file.length()];
-			FileInputStream fis = new FileInputStream(file);
-			fis.read(byteArr); // convert to bytes
-			fis.close();
-		} catch (Exception e) {
-			System.out.println("Exception: " + e);
-			System.out.println("from fileToByteArr()");
-		}
+//		try {
+		byteArr = new byte[ (int) file.length()];
+		FileInputStream fis = new FileInputStream(file);
+		fis.read(byteArr); // convert to bytes
+		fis.close();
+//		} catch (Exception e) {
+//			System.out.println("Exception: " + e);
+//			System.out.println("from fileToByteArr()");
+//		}
 		
 		
 		return byteArr;

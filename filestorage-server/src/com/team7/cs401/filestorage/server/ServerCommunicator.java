@@ -104,39 +104,26 @@ public class ServerCommunicator {
                                 System.out.println("Failure message sent.");
                     		}
                     	} else if (msg.getType().equalsIgnoreCase("file")) { // File message
-                    		System.out.println("Recieved a file");
-                			
-                			// get received file
-                    		byte[] fileBytes = msg.getFileBytes();
-                    		// plan the file path
-                    		Path path = Paths.get("allfiles/" + msg.getText1());
-                    		Files.createDirectories(path);
-                    		File recFile = new File(path + "/" + msg.getText2());
-                    		// convert bytes to file
-                    		FileHandler.byteArrToFile(recFile, fileBytes);
-
-            				// opens the file
-            				Desktop desktop = Desktop.getDesktop();
-            				desktop.open(recFile);
-                			
-                			// Send msg back : upload validation
-                			Message msgR = new Message("upload", "valid", "user", "UUID:");
+                    		// generate response
+                    		Message msgR = ServerHelper.uploadValidation(msg);
+                    		// send response
                             messagesOut.add(msgR);
                             objOutStream.writeUnshared(messagesOut);
                             objOutStream.flush();
-                            System.out.println("Upload msg sent");
                     	} else if (msg.getType().equalsIgnoreCase("fileReq")) { // Request to download a file
                     		System.out.println("Recieved a file download request");
+                    		try {
+                    			// make response msg
+                        		Message msgR =ServerHelper.grantDownloadRequest(msg);
+                        		// send the message
+                    			messagesOut.clear();
+                            	messagesOut.add(msgR);
+                            	objOutStream.writeUnshared(messagesOut);
+                                objOutStream.flush();
+                    		} catch (Exception e) {
+                    			System.out.println("server could not find file");
+                    		}
                     		
-                    		// make response msg
-                    		Message msgR =ServerHelper.grantDownloadRequest(msg);
-                    		
-                    		
-                    		// send the message
-                			messagesOut.clear();
-                        	messagesOut.add(msgR);
-                        	objOutStream.writeUnshared(messagesOut);
-                            objOutStream.flush();
                     	} else if (msg.getType().equalsIgnoreCase("mainDirRequest")) { //  returns the users main dir
                     		// generate response message
                     		String user = msg.getText1();
@@ -147,9 +134,6 @@ public class ServerCommunicator {
                     		messagesOut.add(msgDir);
                             objOutStream.writeUnshared(messagesOut);
                             objOutStream.flush();
-                    		
-                    		
-                
                     	} else if (msg.getType().equalsIgnoreCase("OTHER")) { // this is where the other msgs will go
                     		
                     	} else if (msg.getType().equalsIgnoreCase("logout")) {

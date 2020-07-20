@@ -4,12 +4,17 @@ import java.awt.Desktop;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
+
+import com.team7.cs401.filestorage.client.FileHandler;
 import com.team7.cs401.filestorage.client.Message;
 
 
@@ -100,23 +105,15 @@ public class ServerCommunicator {
                     	} else if (msg.getType().equalsIgnoreCase("file")) { // File message
                     		System.out.println("Recieved a file");
                 			
-                			// try to open the recieved file
+                			// get recieved file
                     		byte[] fileBytes = msg.getFileBytes();
-                    		// plan the filepath
-                    		File recFile = new File("allfiles/recText.txt");
-                    		
-                    		try {
-                    			OutputStream os = new FileOutputStream(recFile);
-                    			// write bytes to recFile
-                    			os.write(fileBytes);
-                    			os.close();
-                    		} catch (Exception e) {
-                    			System.out.print("Exception: " + e);
-                    		}
-                    		
-                    		// turn byte array into a file
-                    		
-                    		
+                    		// plan the file path
+                    		Path path = Paths.get("allfiles/" + msg.getText1());
+                    		Files.createDirectories(path);
+                    		File recFile = new File(path + "/" + msg.getText2());
+                    		// convert bytes to file
+                    		FileHandler.byteArrToFile(recFile, fileBytes);
+
             				// opens the file
             				Desktop desktop = Desktop.getDesktop();
             				desktop.open(recFile);

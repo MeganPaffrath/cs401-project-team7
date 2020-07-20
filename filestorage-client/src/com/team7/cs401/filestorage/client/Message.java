@@ -53,6 +53,15 @@ public class Message implements Serializable {
     	this.file = file;
     }
     
+    public Message(String type, String status, String text1, String text2, String text3, byte[] file){
+    	this.type = type;
+    	this.status = status;
+    	this.text1 = text1;
+    	this.text2 = text2;
+    	this.text3 = text3;
+    	this.file = file;
+    }
+    
     public Message(String type, String status, String text1, String text2, File fullFile){
     	this.type = type;
     	this.status = status;

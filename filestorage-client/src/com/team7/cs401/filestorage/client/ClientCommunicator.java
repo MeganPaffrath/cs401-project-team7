@@ -16,6 +16,7 @@ import java.util.List;
  */
 
 public class ClientCommunicator {
+	
 	// might need to change based on UI implementation ------v
 	private enum UserSelection {
 		LOGIN, SIGNUP, LOGOUT, VIEWFILES,
@@ -184,26 +185,18 @@ public class ClientCommunicator {
 	            		
 	            		// Get the file
 	            		System.out.println("Input file name: ");
-	            		String fileName = myScnr.nextLine();
-//	            		File folder = new File("/userdir");
+	            		String filename = myScnr.nextLine();
+	            		String filePath = "userdir/" + filename;
+	            		
 	            		File file = null;
+	            		
+	            		// make msg, send, and rec response
 	            		try {
-	            			file = new File("userdir/" + fileName);
-	            			if (file.exists() ) {
-	            				// opens the file
-//	            				Desktop desktop = Desktop.getDesktop();
-//	            				desktop.open(file);
-	            			}
-	            			
-	            			// turn file into byte array
-	            			byte[] byteArr = new byte[ (int) file.length()];
-	            			FileInputStream fis = new FileInputStream(file);
-	            			fis.read(byteArr); // convert to bytes
-	            			fis.close();
+	            			// convert file to byte array
+	            			byte[] byteArr = FileHandler.fileToByteArr(filePath);
 	            			
 	            			// make the message
-	            			Message msg = new Message("file", "status", "testUser", "UUID", byteArr);
-//	            			Message msg = ClientHelper.generateUploadFile(user, file);
+	            			Message msg = new Message("file", "status", "testUser", filename, "UUID", byteArr);
 	            			
 	            			// send the message
 	            			messagesOut.clear();
@@ -289,6 +282,7 @@ public class ClientCommunicator {
         System.out.println("Status: " + msg.getStatus());
         System.out.println("Text: " + msg.getText1());
     }
+  
 }
 
 

@@ -191,17 +191,17 @@ public class ClientCommunicator {
 	                    messagesIn = (List<Message>) objInStream.readObject();
 	                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
 	                    
-	                    // for each recieved msg, check if valid
+	                    // go through recieved msgs
 	                    for (Message m : messagesIn) {
 	                    	System.out.println("Recieved msg type: " + m.getType());
-	                    	// if valid login
-	                    	if (m.getType().equals("mainDir")) {
-	                    		System.out.println(m.getTextArray());
-	                    		
-	                    		messagesIn.removeAll(messagesIn);
+	                    	Boolean found = ClientHelper.handleViewUserFiles(m);
+	                    	
+	                    	// if valid msg
+	                    	if (found) {
 	                    		break;
 	                    	}
 	                    }
+	                    messagesIn.removeAll(messagesIn);
 	            		break;
 	            	case UPLOAD:
 	            		System.out.println("TRY TO UPLOAD A FILE");

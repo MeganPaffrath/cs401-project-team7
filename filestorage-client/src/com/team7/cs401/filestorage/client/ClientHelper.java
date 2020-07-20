@@ -128,14 +128,22 @@ public class ClientHelper {
 		}
 	}
 	
-	// Message generation to display list of user files
+	/*
+	 * Generates msg to request the main Dir
+	 */
 	public static Message generateViewUserFiles(CurrentUser user) {
 		Message msg = new Message("mainDirRequest", "requesting", user.getUserName());
 		return msg;
 	}
 	
+	/*
+	 * If dirMsg, shows the names of all files
+	 * @param msg
+	 * @return true if the message status is dirMsg
+	 */
 	public static boolean handleViewUserFiles(Message msg)  {
-		if (msg.getStatus().equals("valid")) {
+		if (msg.getStatus().equals("dirMsg")) {
+			System.out.println(msg.getTextArray());
 			return true;
 		} else {
 			return false;

@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 
+import com.team7.cs401.filestorage.client.ClientHelper;
 import com.team7.cs401.filestorage.client.FileHandler;
 import com.team7.cs401.filestorage.client.Message;
 
@@ -124,7 +125,18 @@ public class ServerCommunicator {
                             objOutStream.writeUnshared(messagesOut);
                             objOutStream.flush();
                             System.out.println("Upload msg sent");
-
+                    	} else if (msg.getType().equalsIgnoreCase("fileReq")) { // Request to download a file
+                    		System.out.println("Recieved a file download request");
+                    		
+                    		// make response msg
+                    		Message msgR =ServerHelper.grantDownloadRequest(msg);
+                    		
+                    		
+                    		// send the message
+                			messagesOut.clear();
+                        	messagesOut.add(msgR);
+                        	objOutStream.writeUnshared(messagesOut);
+                            objOutStream.flush();
                     	} else if (msg.getType().equalsIgnoreCase("OTHER")) { // this is where the other msgs will go
                     		
                     	} else if (msg.getType().equalsIgnoreCase("logout")) {

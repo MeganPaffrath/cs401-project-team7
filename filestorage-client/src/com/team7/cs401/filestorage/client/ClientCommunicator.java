@@ -2,9 +2,6 @@ package com.team7.cs401.filestorage.client;
 
 import java.awt.Desktop;
 import java.io.*;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -229,10 +226,49 @@ public class ClientCommunicator {
 	            		} catch (Exception e) {
 	            			System.out.println("File does not exist");
 	            		}
+	            		
 	            		break;
 	            	case DOWNLOAD:
-	//            		cHelper.sendToServer("test send");
 	            		System.out.println("TRY TO DOWNLOAD A FILE");
+	            		
+	            		// build request of file path
+	            		System.out.println("Input file name: "); // this works for individual files, not files withind subdirs
+	            		String fileName = myScnr.nextLine();
+	            		String path = user.getUserName() + "/" + fileName;
+	            		
+	            		// request file by 
+	            		Message msg = ClientHelper.generateDownload(user, path, fileName);
+	            		
+	            		// send the message
+	            		messagesOut.clear();
+	                	messagesOut.add(msg);
+	                	objOutStream.writeUnshared(messagesOut);
+	                    objOutStream.flush();
+	            		
+	            		// recieve response
+	            		messagesIn = (List<Message>) objInStream.readObject();
+	                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+	                    
+	                    for (Message m : messagesIn) {
+	                    	if (m.getStatus().equals("fileMsg")) {
+		                    	System.out.println("File recieved!");
+		                    } else {
+		                    	System.out.println("File not recieved.");
+		                    	System.out.println("Message response status was: " + m.getStatus());
+		                    }
+		                    
+		                    // generate the file
+		                    File recFile = new File("userdir/" + fileName);
+		                    byte[] fileBytes = m.getFileBytes();
+		                    FileHandler.byteArrToFile(recFile, fileBytes);
+		                    
+		                 // open the file
+	        				Desktop desktop = Desktop.getDesktop();
+	        				desktop.open(recFile);
+		                    
+		                    messagesIn.removeAll(messagesIn);
+                    		break;
+	                    }
 	            		break;
 	            	case SHARE:
 	//            		cHelper.sendToServer("test send");

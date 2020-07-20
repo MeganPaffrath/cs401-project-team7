@@ -199,11 +199,22 @@ public class ClientHelper {
 		}
 	}
 	
-	public static Message generateDownload(CurrentUser user, String fileId) {
+	// may need to remove the concept of file ID
+//	public static Message generateDownload(CurrentUser user, String fileId) {
+//		System.out.println("generateDownload method called");
+//		Message msg = new Message("downloadFile", "requesting", user.getUserName(), fileId);
+//		return msg;
+//	}
+	
+	// Temp method to request download by file path & file
+	public static Message generateDownload(CurrentUser user, String filePath, String fileName) {
 		System.out.println("generateDownload method called");
-		Message msg = new Message("downloadFile", "requesting", user.getUserName(), fileId);
+		Message msg = new Message("fileReq", "requesting", user.getUserName(), filePath, fileName);
 		return msg;
 	}
+	
+	
+	
 	public static boolean handleDownload(Message msg) {
 		if (msg.getStatus().equals("valid")) {
 			return true;

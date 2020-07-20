@@ -283,7 +283,7 @@ public class ClientCommunicator {
 			                    byte[] fileBytes = m.getFileBytes();
 			                    FileHandler.byteArrToFile(recFile, fileBytes);
 			                    
-			                 // open the file
+			                    // open the file
 		        				Desktop desktop = Desktop.getDesktop();
 		        				desktop.open(recFile);
 		                    } else {

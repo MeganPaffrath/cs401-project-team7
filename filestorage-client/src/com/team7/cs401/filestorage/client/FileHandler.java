@@ -20,32 +20,21 @@ public class FileHandler {
 		
 		// turn file into byte array
 		byte[] byteArr = null;
-//		try {
 		byteArr = new byte[ (int) file.length()];
 		FileInputStream fis = new FileInputStream(file);
 		fis.read(byteArr); // convert to bytes
 		fis.close();
-//		} catch (Exception e) {
-//			System.out.println("Exception: " + e);
-//			System.out.println("from fileToByteArr()");
-//		}
-		
-		
 		return byteArr;
 	}
 	
 	/*
 	 * @param loc: a File made by the new location
 	 */
-	public static void byteArrToFile(File loc, byte[] bytes) {
-		try {
-			OutputStream os = new FileOutputStream(loc);
-			// write bytes to recFile
-			os.write(bytes);
-			os.close();
-		} catch (Exception e) {
-			System.out.print("Exception: " + e);
-		}
+	public static void byteArrToFile(File loc, byte[] bytes) throws IOException {
+		OutputStream os = new FileOutputStream(loc);
+		// write bytes to recFile
+		os.write(bytes);
+		os.close();
 	}
 	
 }

@@ -128,15 +128,22 @@ public class ClientHelper {
 		}
 	}
 	
-	// Message generation to display list of user files
+	/*
+	 * Generates msg to request the main Dir
+	 */
 	public static Message generateViewUserFiles(CurrentUser user) {
-		System.out.println("generateViewUserFiles method called");
-		Message msg = new Message("viewUserFiles", "requesting", user.getUserName());
+		Message msg = new Message("mainDirRequest", "requesting", user.getUserName());
 		return msg;
 	}
 	
+	/*
+	 * If dirMsg, shows the names of all files
+	 * @param msg
+	 * @return true if the message status is dirMsg
+	 */
 	public static boolean handleViewUserFiles(Message msg)  {
-		if (msg.getStatus().equals("valid")) {
+		if (msg.getStatus().equals("dirMsg")) {
+			System.out.println(msg.getTextArray());
 			return true;
 		} else {
 			return false;
@@ -199,11 +206,20 @@ public class ClientHelper {
 		}
 	}
 	
-	public static Message generateDownload(CurrentUser user, String fileId) {
+	/*
+	 * Generates msg to be sent to server requesting a file download
+	 * @param user
+	 * @param fileName that includes file extension
+	 */
+	public static Message generateDownload(CurrentUser user, String fileName) {
 		System.out.println("generateDownload method called");
-		Message msg = new Message("downloadFile", "requesting", user.getUserName(), fileId);
+		String path = user.getUserName() + "/" + fileName;
+		Message msg = new Message("fileReq", "requesting", user.getUserName(), path, fileName);
 		return msg;
 	}
+	
+	
+	
 	public static boolean handleDownload(Message msg) {
 		if (msg.getStatus().equals("valid")) {
 			return true;

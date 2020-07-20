@@ -14,7 +14,6 @@ public class Message implements Serializable {
     // ideas for files and list of users:
     protected String[] textArray;
     protected byte[] file;
-    protected File fullFile;
 
     public Message() {
     }
@@ -62,13 +61,6 @@ public class Message implements Serializable {
     	this.file = file;
     }
     
-    public Message(String type, String status, String text1, String text2, File fullFile){
-    	this.type = type;
-    	this.status = status;
-    	this.text1 = text1;
-    	this.text2 = text2;
-    	this.fullFile = fullFile;
-    }
     public Message(String type, String status, String text1, String text2, String[] textArr){
     	this.type = type;
     	this.status = status;
@@ -113,10 +105,6 @@ public class Message implements Serializable {
     	return text3;
     }
     
-    // file concepts
-    public File getFile() {
-    	return fullFile;
-    }
     public byte[] getFileBytes() {
     	return file;
     }

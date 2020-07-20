@@ -130,8 +130,7 @@ public class ClientHelper {
 	
 	// Message generation to display list of user files
 	public static Message generateViewUserFiles(CurrentUser user) {
-		System.out.println("generateViewUserFiles method called");
-		Message msg = new Message("viewUserFiles", "requesting", user.getUserName());
+		Message msg = new Message("mainDirRequest", "requesting", user.getUserName());
 		return msg;
 	}
 	
@@ -199,17 +198,15 @@ public class ClientHelper {
 		}
 	}
 	
-	// may need to remove the concept of file ID
-//	public static Message generateDownload(CurrentUser user, String fileId) {
-//		System.out.println("generateDownload method called");
-//		Message msg = new Message("downloadFile", "requesting", user.getUserName(), fileId);
-//		return msg;
-//	}
-	
-	// Temp method to request download by file path & file
-	public static Message generateDownload(CurrentUser user, String filePath, String fileName) {
+	/*
+	 * Generates msg to be sent to server requesting a file download
+	 * @param user
+	 * @param fileName that includes file extension
+	 */
+	public static Message generateDownload(CurrentUser user, String fileName) {
 		System.out.println("generateDownload method called");
-		Message msg = new Message("fileReq", "requesting", user.getUserName(), filePath, fileName);
+		String path = user.getUserName() + "/" + fileName;
+		Message msg = new Message("fileReq", "requesting", user.getUserName(), path, fileName);
 		return msg;
 	}
 	

@@ -137,6 +137,19 @@ public class ServerCommunicator {
                         	messagesOut.add(msgR);
                         	objOutStream.writeUnshared(messagesOut);
                             objOutStream.flush();
+                    	} else if (msg.getType().equalsIgnoreCase("mainDirRequest")) { //  returns the users main dir
+                    		// generate response message
+                    		String user = msg.getText1();
+                    		String[] fileNames = {"this.txt", "method.txt", "isnt.txt", "made.txt", "yet.txt" };
+                    		Message msgDir = new Message("mainDir", "dirMsg", user, fileNames);
+                    		
+                    		// send msg back
+                    		messagesOut.add(msgDir);
+                            objOutStream.writeUnshared(messagesOut);
+                            objOutStream.flush();
+                    		
+                    		
+                
                     	} else if (msg.getType().equalsIgnoreCase("OTHER")) { // this is where the other msgs will go
                     		
                     	} else if (msg.getType().equalsIgnoreCase("logout")) {

@@ -44,6 +44,13 @@ public class Message implements Serializable {
     	this.file = file;
     }
     
+    public Message(String type, String status, String text1, String[] textArray){
+    	this.type = type;
+    	this.status = status;
+    	this.text1 = text1;
+    	this.textArray = textArray;
+    }
+    
     public Message(String type, String status, String text1, String text2, byte[] file){
     	this.type = type;
     	this.status = status;
@@ -107,6 +114,15 @@ public class Message implements Serializable {
     
     public byte[] getFileBytes() {
     	return file;
+    }
+    
+    public String getTextArray() {
+    	String out = "";
+    	for (String i : textArray) {
+    		out += i + " ";
+    	}
+    	
+    	return out;
     }
 }
 

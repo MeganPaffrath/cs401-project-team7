@@ -137,19 +137,21 @@ public class ClientCommunicator {
             	UserSelection selection = UserSelection.LOGOUT;
             	
             	System.out.println("Input text to enter next test loop:");
-            	System.out.println("\n\t1: LOGOUT \n\t2: UPLOAD \n\t3: DOWNLOAD \n\t4:SHARE \n\t5: DELETE \n\t6: CHANGE SETTINGS ");
+            	System.out.println("\n\t1: LOGOUT \n\t2: VIEWFILES \n\t3: UPLOAD \n\t4: DOWNLOAD \n\t5:SHARE \n\t6: DELETE \n\t7: CHANGE SETTINGS ");
             	String select = myScnr.nextLine();
             	if (select.equals("1")) {
             		selection = UserSelection.LOGOUT;
-            	}else if (select.equals("2")) {
-            		selection = UserSelection.UPLOAD;
-            	} else if (select.equals("3")) {
+            	} else if (select.equals("2")) {
+            		selection = UserSelection.VIEWFILES; 
+	            } else if (select.equals("3")) {
+	        		selection = UserSelection.UPLOAD;
+	        	} else if (select.equals("4")) {
             		selection = UserSelection.DOWNLOAD;
-            	} else if (select.equals("4")) {
-            		selection = UserSelection.SHARE;
             	} else if (select.equals("5")) {
-            		selection = UserSelection.DELETE;
+            		selection = UserSelection.SHARE;
             	} else if (select.equals("6")) {
+            		selection = UserSelection.DELETE;
+            	} else if (select.equals("7")) {
             		selection = UserSelection.SETTING;
             	}
             	
@@ -175,7 +177,31 @@ public class ClientCommunicator {
 	                    }
 	            		break;
 	            	case VIEWFILES:
-	            		System.out.println("TRY TO VIEW ALL THE FILES");
+	            		System.out.println("Get a list of all files");
+	            		// generate msg to be sent
+	            		Message msg = ClientHelper.generateViewUserFiles(user);
+	            		
+	            		// send message
+	            		messagesOut.clear();
+	                	messagesOut.add(msg);
+	                	objOutStream.writeUnshared(messagesOut);
+	                    objOutStream.flush();
+	            		
+	            		// Receive response
+	                    messagesIn = (List<Message>) objInStream.readObject();
+	                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+	                    
+	                    // for each recieved msg, check if valid
+	                    for (Message m : messagesIn) {
+	                    	System.out.println("Recieved msg type: " + m.getType());
+	                    	// if valid login
+	                    	if (m.getType().equals("mainDir")) {
+	                    		System.out.println(m.getTextArray());
+	                    		
+	                    		messagesIn.removeAll(messagesIn);
+	                    		break;
+	                    	}
+	                    }
 	            		break;
 	            	case UPLOAD:
 	            		System.out.println("TRY TO UPLOAD A FILE");
@@ -194,12 +220,12 @@ public class ClientCommunicator {
 	            			
 	            			// make the message (null UUID because UUID does not exist yet)
 //	            			Message msg = new Message("file", "requesting", user.getUserName(), filename, null, byteArr);
-	            			Message msg =  ClientHelper.generateUpload(user, filename, byteArr);
+	            			Message msgUpload =  ClientHelper.generateUpload(user, filename, byteArr);
 	            			System.out.println("message made");
 	            			
 	            			// send the message
 	            			messagesOut.clear();
-		                	messagesOut.add(msg);
+		                	messagesOut.add(msgUpload);
 		                	objOutStream.writeUnshared(messagesOut);
 		                    objOutStream.flush();
 		                    
@@ -237,11 +263,11 @@ public class ClientCommunicator {
 	            		String path = user.getUserName() + "/" + fileName;
 	            		
 	            		// request file by 
-	            		Message msg = ClientHelper.generateDownload(user, path, fileName);
+	            		Message msgDownload = ClientHelper.generateDownload(user, fileName);
 	            		
 	            		// send the message
 	            		messagesOut.clear();
-	                	messagesOut.add(msg);
+	                	messagesOut.add(msgDownload);
 	                	objOutStream.writeUnshared(messagesOut);
 	                    objOutStream.flush();
 	            		

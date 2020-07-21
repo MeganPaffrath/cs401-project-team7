@@ -28,18 +28,28 @@ public class ServerHelper {
 	}
 	
 	/*
-	 * Tries to generate new user
-	 * If user generated, sets status to "valid"
+	 * If user can be generated, sets msg status to "valid"
 	 * 
 	 * @param Message
 	 * @return msg with status "valid" if valid
 	 * 
 	 */
-	public static Message newUser(Message msg) {
-		// if valid user generated:
+	public static Message newUserValidation(Message msg) {
+		// if user does not yet exist:
 		msg.setStatus("valid");
 		// otherwise dont change status
 		return msg;
+	}
+	
+	/*
+	 * Reads newUserValidation message
+	 * Generate new user if the status is valid
+	 * 
+	 * @param Message from newUserValidation
+	 * 
+	 */
+	public static void newUser(Message msg) {
+		// if message status is valid, generate new user
 	}
 	
 	/*

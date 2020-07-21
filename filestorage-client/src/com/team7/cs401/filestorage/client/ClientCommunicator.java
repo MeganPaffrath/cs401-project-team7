@@ -247,8 +247,6 @@ public class ClientCommunicator {
 		                    		break;
 		                    	}
 		                    }
-	            			
-	            			
 	            		} catch (Exception e) {
 	            			System.out.println("File does not exist");
 	            		}

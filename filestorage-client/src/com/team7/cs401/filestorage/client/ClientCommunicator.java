@@ -298,23 +298,23 @@ public class ClientCommunicator {
 	            		System.out.println("TRY TO SHARE A FILE");
 	            		Boolean endList = false;
 	            		int shareCount = 0;
+	            		// Hard-coded shareList array size as 10,000
+	            		String[] shareList = new String[10000];
 	            		
 	            		System.out.println("Enter the file name:\t");
-	            		String filename = myScnr.nextLine();
-	            		
+	            		String file_name = myScnr.nextLine();
 	            		while(endList == false) {
-		            		List<String> shareList = new ArrayList<>();
 		            		System.out.println("Enter the username of the account to be shared with *OR* Hit ENTER to END\n\t:");   
 		            		String inputUsername = myScnr.nextLine();
 		            		if (inputUsername.isEmpty()){
 		            			endList = true;
 		            		}else {
-			            		shareList.add(inputUsername);
+			            		shareList[shareCount] = inputUsername;
 			            		shareCount++;
 		            		}
 	            		}
 	            		if(shareCount > 0) {
-	            			Message msgShare = ClientHelper.generateShare(user, filename, ShareList);
+	            			Message msgShare = ClientHelper.generateShare(user, file_name, shareList);
 	            			messagesOut.clear();
 		                	messagesOut.add(msgShare);
 		                	objOutStream.writeUnshared(messagesOut);
@@ -329,11 +329,10 @@ public class ClientCommunicator {
 		                    	
 		                    	// if valid msg
 		                    	if (found) {
-		                    		System.out.println("File: '" +  filename + "' has been granted to share with other user accounts.\n");
+		                    		System.out.println("File: '" +  file_name + "' has been granted to share with other user accounts.\n");
 		                    		break;
 		                    	}
 		                    }
-		                    shareList.clear();
 	            		}
 
 	            		

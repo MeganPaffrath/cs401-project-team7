@@ -301,10 +301,9 @@ public class ClientCommunicator {
 	            		
 	            		System.out.println("Enter the file name:\t");
 	            		String filename = myScnr.nextLine();
-	            		myScnr.flush();
 	            		
 	            		while(endList == false) {
-		            		String[] shareList;
+		            		List<String> shareList = new ArrayList<>();
 		            		System.out.println("Enter the username of the account to be shared with *OR* Hit ENTER to END\n\t:");   
 		            		String inputUsername = myScnr.nextLine();
 		            		if (inputUsername.isEmpty()){
@@ -330,10 +329,11 @@ public class ClientCommunicator {
 		                    	
 		                    	// if valid msg
 		                    	if (found) {
-		                    		System.out.printnln("File: '" +  filename + "' has been granted to share with other user accounts.\n");
+		                    		System.out.println("File: '" +  filename + "' has been granted to share with other user accounts.\n");
 		                    		break;
 		                    	}
 		                    }
+		                    shareList.clear();
 	            		}
 
 	            		

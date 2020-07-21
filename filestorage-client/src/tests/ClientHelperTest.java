@@ -10,10 +10,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.team7.cs401.filestorage.client.ClientHelper;
+import com.team7.cs401.filestorage.client.CurrentUser;
 import com.team7.cs401.filestorage.client.Message;
 
 
 public class ClientHelperTest {
+	CurrentUser user;
+	
+	@Before 
+	public void initTest() {
+		user = new CurrentUser();
+		user.setUserName("username");
+		user.setLoggedIn(true);
+	}
 
 	@Test
 	public void test_generateLogin_validMSG() {
@@ -55,13 +64,103 @@ public class ClientHelperTest {
 		assertFalse("Status <valid> should be a successful signup.", signUp);
 	}
 	
-//	@Test
-//	public void test_generateAccountSettings_goodMSG() {
-//		Message msg = ClientHelper.generateAccountSettings("user", "pass", "email");
-//		assertEquals("text1 should be <username>", "user", msg.getText1());
-//		assertEquals("text2 should be <password>", "pass", msg.getText2());
-//		assertEquals("text3 should be <email>", "email", msg.getText3());
-//
-//	}
+	@Test
+	public void test_generateDownload_goodReq() {
+		String testFile = "test.txt";
+		Message msg = ClientHelper.generateDownload(user, testFile);
+		
+		assertEquals("Message type should be `fileReq`", "fileReq", msg.getType());
+		assertEquals("Message status should be `requesting`", "requesting", msg.getStatus());
+		assertEquals("Text1 should be <username>", "username", msg.getText1());
+		assertEquals("Text2 should be in format `username/test.txt`", "username/test.txt", msg.getText2());
+		assertEquals("Text3 should be `test.txt`", "test.txt", msg.getText3());
+	}
+	
+	// ACCOUNT SETTINGS -----------------------------------------------------------------------------------------v
+	
+	@Test
+	public void test_generatePasswordChange_goodReq() {
+		String newPass = "newpass";
+		Message msg = ClientHelper.generatePasswordChange(user.getUserName(), newPass);
+		
+		assertEquals("Message type should be `passwordChange`", "passwordChange", msg.getType());
+		assertEquals("Message status should be `requesting`", "requesting", msg.getStatus());
+		assertEquals("Text1 should be <username>", user.getUserName(), msg.getText1());
+		assertEquals("Text2 should be <pssword>", newPass, msg.getText2());
+	}
+	
+	@Test
+	public void test_handlePasswordChange_goodResp() {
+		Message msgR = new Message("settings", "success", "username");
+		boolean handled = ClientHelper.handlePasswordChange(msgR);
+		
+		assertTrue("For password change response type `settings` and status `success` password change should work.", handled);
+	}
+	
+	@Test
+	public void test_handlePasswordChange_badResp() {
+		Message msgR = new Message("settings", "failure", "username");
+		
+		boolean handled = ClientHelper.handlePasswordChange(msgR);
+		
+		assertFalse("For password change response type `settings` and status `failure` password change should not work.", handled);
+	}
+	
+	@Test
+	public void test_generateEmailChange_goodReq() {
+		String newMail = "newmail@gmail.com";
+		Message msg = ClientHelper.generateEmailChange(user.getUserName(), newMail);
+		
+		assertEquals("Message type should be `emailChange`", "emailChange", msg.getType());
+		assertEquals("Message status should be `requesting`", "requesting", msg.getStatus());
+		assertEquals("Text1 should be <username>", user.getUserName(), msg.getText1());
+		assertEquals("Text2 should be <email>", newMail, msg.getText2());
+	}
+	
+	@Test
+	public void test_handleEmailChange_goodResp() {
+		Message msgR = new Message("settings", "success", "username");
+		
+		boolean handled = ClientHelper.handleEmailChange(msgR);
+		
+		assertTrue("For email change response type `settings` and status `success` email change should work", handled);
+	}
+	
+	@Test
+	public void test_handleEmailChange_badResp() {
+		Message msgR = new Message("settings", "failure", "username");
+		
+		boolean handled = ClientHelper.handleEmailChange(msgR);
+		
+		assertFalse("For email change response type `settings` and status `failure` email change should not work", handled);
+	}
+	// END: ACCOUNT SETTINGS ------------------------------------------------------------------------------------^
+	
+	@Test
+	public void test_logout_goodReq() {
+		Message msg = ClientHelper.logout(user);
+		
+		assertEquals("Message type should be `logout`", "logout", msg.getType());
+		assertEquals("Message status shoudl be `requesting`", "requesting", msg.getStatus());
+		assertEquals("message text1 should be <username>", user.getUserName(), msg.getText1());
+	}
+	
+	@Test
+	public void test_handleLogin_goodLogin() {
+		Message msg = new Message("login", "valid", "username", "password");
+		Boolean loggedIn = ClientHelper.handleLogin(msg);
+		
+		assertTrue("Login response of type `login` and status `valid` should work.", loggedIn);
+	}
+	
+	@Test
+	public void test_handleLogin_baLogin() {
+		Message msg = new Message("login", "invalid", "username", "password");
+		Boolean loggedIn = ClientHelper.handleLogin(msg);
+		
+		assertFalse("Login response of type `login` and status `invalid` should not work.", loggedIn);
+	}
+	
 	
 }
+

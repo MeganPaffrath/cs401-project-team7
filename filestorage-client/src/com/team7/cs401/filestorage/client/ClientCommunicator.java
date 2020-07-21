@@ -278,23 +278,20 @@ public class ClientCommunicator {
 	                    for (Message m : messagesIn) {
 	                    	if (m.getStatus().equals("fileMsg")) {
 		                    	System.out.println("File recieved!");
+		                    	// generate the file
+			                    File recFile = new File("userdir/" + fileName);
+			                    byte[] fileBytes = m.getFileBytes();
+			                    FileHandler.byteArrToFile(recFile, fileBytes);
+			                    
+			                    // open the file
+		        				Desktop desktop = Desktop.getDesktop();
+		        				desktop.open(recFile);
 		                    } else {
 		                    	System.out.println("File not recieved.");
 		                    	System.out.println("Message response status was: " + m.getStatus());
 		                    }
-		                    
-		                    // generate the file
-		                    File recFile = new File("userdir/" + fileName);
-		                    byte[] fileBytes = m.getFileBytes();
-		                    FileHandler.byteArrToFile(recFile, fileBytes);
-		                    
-		                 // open the file
-	        				Desktop desktop = Desktop.getDesktop();
-	        				desktop.open(recFile);
-		                    
-		                    messagesIn.removeAll(messagesIn);
-                    		break;
 	                    }
+	                    messagesIn.removeAll(messagesIn);
 	            		break;
 	            	case SHARE:
 	//            		cHelper.sendToServer("test send");

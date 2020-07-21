@@ -298,6 +298,7 @@ public class ClientCommunicator {
 	            		System.out.println("TRY TO SHARE A FILE");
 	            		Boolean endList = false;
 	            		int shareCount = 0;
+	            		
 	            		System.out.println("Enter the file name:\t");
 	            		String filename = myScnr.nextLine();
 	            		myScnr.flush();

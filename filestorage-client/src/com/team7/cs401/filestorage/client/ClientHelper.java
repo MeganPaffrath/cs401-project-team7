@@ -102,7 +102,7 @@ public class ClientHelper {
 	 * @return true if account settings changed
 	 */
 	public static boolean handlePasswordChange(Message msg) {
-		if (msg.getStatus().equals("valid")) {
+		if (msg.getStatus().equals("success")) {
 			return true;
 		} else {
 			return false;
@@ -121,7 +121,7 @@ public class ClientHelper {
 	 * @return true if account settings changed
 	 */
 	public static boolean handleEmailChange(Message msg) {
-		if (msg.getStatus().equals("valid")) {
+		if (msg.getStatus().equals("success")) {
 			return true;
 		} else {
 			return false;

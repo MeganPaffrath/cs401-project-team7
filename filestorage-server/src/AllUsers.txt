@@ -4,3 +4,4 @@ kim,98765,kim@hotmail.com
 username,password,useremail@email.com
 abby,ybba,abby@abby.com
 joey,jojojo,joey@joe.com
+newuser,goodpassword,anemail@email.com

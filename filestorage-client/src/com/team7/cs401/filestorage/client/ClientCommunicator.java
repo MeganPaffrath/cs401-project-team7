@@ -67,8 +67,7 @@ public class ClientCommunicator {
 	            		if(signupLogin.equals("1")  || signupLogin.equals("2"))
 	            			break;
             		}
-            		if(signupLogin.equals("1") ) { // THIS DOES NOT WORK YET. NEED TO ADD IN ERROR CHECKING AS WELL AS FIX
-            			System.out.println("This doesn't work yet. This will need to be fixed.");
+            		if(signupLogin.equals("1") ) {
             			System.out.println("Username:\t");
             			String username = myScnr.nextLine();
             			String email;
@@ -139,7 +138,7 @@ public class ClientCommunicator {
             	UserSelection selection = UserSelection.LOGOUT;
             	
             	System.out.println("Input text to enter next test loop:");
-            	System.out.println("\n\t1: LOGOUT \n\t2: VIEWFILES \n\t3: UPLOAD \n\t4: DOWNLOAD \n\t5:SHARE \n\t6: DELETE \n\t7: CHANGE SETTINGS ");
+            	System.out.println("\n\t1: LOGOUT \n\t2: VIEWFILES \n\t3: UPLOAD \n\t4: DOWNLOAD \n\t5: SHARE \n\t6: DELETE \n\t7: CHANGE SETTINGS ");
             	String select = myScnr.nextLine();
             	if (select.equals("1")) {
             		selection = UserSelection.LOGOUT;

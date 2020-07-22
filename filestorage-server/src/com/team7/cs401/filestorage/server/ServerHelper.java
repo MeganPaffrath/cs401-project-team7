@@ -14,16 +14,11 @@ import com.team7.cs401.filestorage.client.Message;
 
 public class ServerHelper {
 	
-	private static AllUsers allUsers = new AllUsers();
+	private AllUsers allUsers = new AllUsers();
 	
-	static {
-		// I'm only doing this because we want our methods below to to be static
-		// this is an antipattern (or so I'm told)
-		allUsers.loadData("AllUsers.txt");
-	}
 
 	public ServerHelper() {
-		
+		allUsers.loadData("AllUsers.txt");
 		
 	}
 	

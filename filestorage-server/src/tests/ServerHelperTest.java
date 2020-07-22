@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.team7.cs401.filestorage.client.Message;
+import com.team7.cs401.filestorage.server.AllUsers;
 import com.team7.cs401.filestorage.server.ServerHelper;
 
 public class ServerHelperTest {
@@ -65,22 +66,42 @@ public class ServerHelperTest {
 	@Test
 	public void test_changeAccountSettings_changePassword() {
 		// generate new user if user DNE yet
+		AllUsers allUsers = new AllUsers();
+		allUsers.addOrModifyUser("username", "password", "usernameemail@email.com");
 		
-		// change their password
-		fail("test not yet implemented");
+		Message inMsg = new Message("passwordChange", "requesting", "username", "newPassword");
+		
+		// change the password
+		Message msgR = sHelper.changeAccountSettings(inMsg);
+		
+		assertEquals("Response type should be `settings`", "settings", msgR.getType());
+		assertEquals("response status should be `success`", "success", msgR.getStatus());
+		assertEquals("Text1 should be <username>", "username", msgR.getText1());
+		assertEquals("Users password should have been changed in txt file", "newPassword", allUsers.getUser("username").getPassword());
 		
 		// change password back to what it was (reset test)
+		allUsers.addOrModifyUser("username", "password", "usernameemail@email.com");
 	}
 	
 	// email change
 	@Test
 	public void test_changeAccountSettings_changeEmail() {
 		// generate new user if user DNE yet
-		
-		// change their email
-		fail("test not yet implemented");
-		
-		// change email back to what it was (reset test)
+				AllUsers allUsers = new AllUsers();
+				allUsers.addOrModifyUser("username", "password", "usernameemail@email.com");
+				
+				Message inMsg = new Message("emailChange", "requesting", "username", "newemail@email.com");
+				
+				// change the password
+				Message msgR = sHelper.changeAccountSettings(inMsg);
+				
+				assertEquals("Response type should be `settings`", "settings", msgR.getType());
+				assertEquals("response status should be `success`", "success", msgR.getStatus());
+				assertEquals("Text1 should be <username>", "username", msgR.getText1());
+				assertEquals("User's email should have been changed in txt file", "newemail@email.com", allUsers.getUser("username").getUserEmail());
+				
+				// change password back to what it was (reset test)
+				allUsers.addOrModifyUser("username", "password", "usernameemail@email.com");
 	}
 	// END: ACCOUNT SETTINGS -------------------------------------------------------------------------------------^
 }

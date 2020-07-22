@@ -28,7 +28,6 @@ public class ServerHelper {
 	}
 	
 	
-	
 	/*
 	 * Checks if user is valid
 	 * 
@@ -57,8 +56,12 @@ public class ServerHelper {
 	 * 
 	 */
 	public static Message newUserValidation(Message msg) {
-		// if user does not yet exist:
-		msg.setStatus("valid");
+		String username = msg.getText1();
+		User existingUser = allUsers.getUser(username);
+		if (existingUser == null) {
+			// if user does not yet exist:
+			msg.setStatus("valid");
+		}
 		// otherwise dont change status
 		return msg;
 	}

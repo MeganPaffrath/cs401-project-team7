@@ -24,10 +24,20 @@ public class AllUsers {
 		return null;		
 	}
 
-	public void addOrModifyUser(String username, String password,String email) {
-		
-		this.users.add(new User(username,password, email));
-		
+	public void addOrModifyUser(String username, String password, String email) {
+		// check to see if the user exists
+		User existingUser = getUser(username);
+		if (existingUser == null) {
+			this.users.add(new User(username,password, email));
+		} else {
+			// update existing user
+			for (User user: users) {
+				if ( user.getUserName().equals(username)) {
+					user.setPassword(password);
+					user.setUserEmail(email);
+				}
+			}
+		}
 	}
 	
 	public void save(String sourceName) {

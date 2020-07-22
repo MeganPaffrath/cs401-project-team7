@@ -14,14 +14,16 @@ public class ServerHelperTest {
 	@Test
 	public void test_validateLogin_validLogin() {
 		Message inMsg = new Message("login", "pending", "username", "password");
-		Message msg = ServerHelper.validateLogin(inMsg);
+		ServerHelper serverHelper = new ServerHelper();
+		Message msg = serverHelper.validateLogin(inMsg);
 		assertEquals("A valid login should set the status to <valid>", "valid", msg.getStatus());
 	}
 	
 	@Test
 	public void test_validateLogin_invalidLogin() {
 		Message inMsg = new Message("login", "pending", "baduser", "badpass");
-		Message msg = ServerHelper.validateLogin(inMsg);
+		ServerHelper serverHelper = new ServerHelper();
+		Message msg = serverHelper.validateLogin(inMsg);
 		assertNotEquals("An invalid login should NOT set the status to <valid>", "valid", msg.getStatus());
 	}
 	

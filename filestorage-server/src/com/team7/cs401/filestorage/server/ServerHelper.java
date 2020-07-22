@@ -11,18 +11,30 @@ import com.team7.cs401.filestorage.client.FileHandler;
 import com.team7.cs401.filestorage.client.Message;
 
 public class ServerHelper {
+	
+	private AllUsers allUsers = new AllUsers();
+
+	public ServerHelper() {
+		allUsers.loadData("AllUsers.txt");
+		
+	}
+	
 	/*
 	 * Checks if user is valid
 	 * 
 	 * @param Message
 	 * @return msg with staus "valid" if valid
 	 */
-	public static Message validateLogin(Message msg) {
+	public Message validateLogin(Message msg) { 
 		String username = msg.getText1();
 		String password = msg.getText2();
 		
+		allUsers.getUser(username);
+		User user = allUsers.getUser(username);
 		// if valid user:
-		msg.setStatus("valid");
+		if (user != null && user.getPassword().equals(password)) {
+			msg.setStatus("valid");
+		}
 		// otherwise dont change status
 		return msg;
 	}

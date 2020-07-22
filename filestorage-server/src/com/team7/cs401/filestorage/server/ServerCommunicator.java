@@ -86,13 +86,38 @@ public class ServerCommunicator {
                     		// handle login message
                     		Message msgR = sHelper.validateLogin(msg);
                     		
-                    		// send back response
-	                          messagesOut.add(msg);
+                			// send back response
+		                    messagesOut.add(msg);
+		                      
+		                    objOutStream.writeUnshared(messagesOut);
+		                    objOutStream.flush();
+		                    System.out.println("Sending login response");
 	                          
-	                          objOutStream.writeUnshared(messagesOut);
-	                          objOutStream.flush();
-	                          System.out.println("Sending login response");
+                    	} else if (msg.getType().equalsIgnoreCase("signup")) { // this is where the other msgs will go
+                    		System.out.println("Recieved signup request");
                     		
+                    		// Test if valid user
+                    		sHelper.newUserValidation(msg);
+                    		
+                    		// make user if valid
+                    		sHelper.newUser(msg);
+                    		
+                    		// if user created, make directory for them as well.
+                    		File newFile = new File("allfiles/" + msg.getText1());
+                    		newFile.mkdir();
+                    		// within this folder make an example file
+                    		File newInnerFile = new File("allfiles/" + msg.getText1() + "/firstFile.txt");
+                    		String str = "This is your first file!";
+                    	    BufferedWriter writer = new BufferedWriter(new FileWriter(newInnerFile));
+                    	    writer.write(str);
+                    	    writer.close();
+                    		
+                    		// send the msg back
+                    		messagesOut.add(msg);
+		                      
+		                    objOutStream.writeUnshared(messagesOut);
+		                    objOutStream.flush();
+		                    System.out.println("Sending new user response msg");
                     	} else if (msg.getType().equalsIgnoreCase("file")) { // File message
                     		// generate response
                     		Message msgR = sHelper.uploadValidation(msg);

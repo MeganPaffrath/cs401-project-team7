@@ -37,18 +37,18 @@ public class ServerHelperTest {
 	@Test
 	public void test_newUserValidation_lookForNew() {
 		Message inMsg = new Message("signup", "requesting", "usernameDNE", "password", "email@email.com");
-		Message newUser = sHelper.newUserValidation(inMsg);
+		sHelper.newUserValidation(inMsg);
 		
-		assertEquals("There should not be a username of `usernameDNE` in the database, should produce `signup` msg with status `valid`", "valid", newUser.getStatus());
+		assertEquals("There should not be a username of `usernameDNE` in the database, should produce `signup` msg with status `valid`", "valid", inMsg.getStatus());
 
 	}
 	
 	@Test
 	public void test_newUserValidation_userExists() {
 		Message inMsg = new Message("signup", "requesting", "username", "password", "goodemail@email.com");
-		Message newUser = sHelper.newUserValidation(inMsg);
+		sHelper.newUserValidation(inMsg);
 		
-		assertEquals("There should already be a username of `username` in the database, should produce `signup` msg with status `invalid`", "invalid", newUser.getStatus());
+		assertEquals("There should already be a username of `username` in the database, should produce `signup` msg with status `invalid`", "invalid", inMsg.getStatus());
 	}
 	
 	// Logout

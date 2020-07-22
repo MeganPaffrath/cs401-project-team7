@@ -2,6 +2,8 @@ package com.team7.cs401.filestorage.server;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class AllUsers {
@@ -20,25 +22,27 @@ public class AllUsers {
 		return null;		
 	}
 
-	public void addOrModifyUser(String username, String password) {
-		this.users.add(new User(username,password));
+	public void addOrModifyUser(String username, String password,String email) {
+		
+		this.users.add(new User(username,password, email));
 		
 	}
 	
 	public void loadData(String filename) {
 		try {
+			Path path = Paths.get("src/" + filename);
 			// put file in project main folder, not the src folder
-			FileReader fin = new FileReader(filename);
+			FileReader fin = new FileReader(path.toFile().getAbsolutePath());
 			BufferedReader bis = new BufferedReader(fin);
 			int line=1;
 			String data;
 			while ((data = bis.readLine()) != null) {
 				String[] values = data.split(",");
-				if (values.length != 2) {
-					System.out.println("Warning: Invalid DVD entry line \"" + line + "\"");
+				if (values.length != 3) {
+					System.out.println("Warning: Invalid User entry line \"" + line + "\"");
 					return;
 				}
-				addOrModifyUser(values[0], values[1]);
+				addOrModifyUser(values[0], values[1],values[2]);
 				line++;
 			}
 		} catch (Exception e) {
@@ -47,11 +51,5 @@ public class AllUsers {
 		}
 	}
 
-	public static void main(String[] args) {
-		AllUsers allUsers = new AllUsers();
-		allUsers.loadData("I:\\Summer2020\\Project\\Phase 3\\cs401-project-team7\\filestorage-server\\src\\AllUsers.txt");
-		User result = allUsers.getUser("jim");
-		System.out.println(result.getPassword());
-		
-	}
+	
 }

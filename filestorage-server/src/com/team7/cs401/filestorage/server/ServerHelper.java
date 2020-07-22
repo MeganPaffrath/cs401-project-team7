@@ -11,36 +11,30 @@ import com.team7.cs401.filestorage.client.FileHandler;
 import com.team7.cs401.filestorage.client.Message;
 
 public class ServerHelper {
+	
+	private AllUsers allUsers = new AllUsers();
+
+	public ServerHelper() {
+		allUsers.loadData("AllUsers.txt");
+		
+	}
+	
 	/*
 	 * Checks if user is valid
 	 * 
 	 * @param Message
 	 * @return msg with staus "valid" if valid
 	 */
-	private AllUsers allUsers = new AllUsers();
-
-	
-	public ServerHelper() {
-		allUsers.loadData("I:\\Summer2020\\Project\\Phase 3\\cs401-project-team7\\filestorage-server\\src\\AllUsers.txt");
-		
-		
-	}
-	
-	
-	public Message validateLogin(Message msg) {  //go back
+	public Message validateLogin(Message msg) { 
 		String username = msg.getText1();
 		String password = msg.getText2();
 		
 		allUsers.getUser(username);
 		User user = allUsers.getUser(username);
+		// if valid user:
 		if (user != null && user.getPassword().equals(password)) {
 			msg.setStatus("valid");
 		}
-		
-		/* create allusers instance
-		 * get user passing from clients
-		*/
-		// if valid user:
 		// otherwise dont change status
 		return msg;
 	}

@@ -3,11 +3,12 @@ package com.team7.cs401.filestorage.server;
 public class User {
 	private String userName;
 	private String password;
-
-	public User(String UserName, String Password){
+	private String userEmail;
+	
+	public User(String UserName, String Password, String email){
 		this.setUserName(UserName);
 		this.setPassword(Password);
-		
+		this.setUserEmail(email);
 	}
 
 	public String getUserName() {
@@ -25,8 +26,14 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-
+	
+	public String getUserEmail() {
+		return userEmail;
+	}
+	
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
 
 
 }

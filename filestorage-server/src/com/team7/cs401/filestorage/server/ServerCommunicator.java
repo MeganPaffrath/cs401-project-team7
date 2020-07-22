@@ -93,33 +93,6 @@ public class ServerCommunicator {
 	                          objOutStream.flush();
 	                          System.out.println("Sending login response");
                     		
-                    		// check that username = username and password = password
-//                    		if (msg.getText1().contentEquals("username") && msg.getText2().contentEquals("password")) {
-//                    			System.out.println("Valid login");
-//                    			
-//                    			// set message status
-//                    			msg.setStatus("valid");
-//                    			
-//                    			// Send msg back
-//                                messagesOut.add(msg);
-//                                objOutStream.writeUnshared(messagesOut);
-//                                objOutStream.flush();
-//                                System.out.println("Success message sent.");
-//                    			
-//                    		} else {
-//                    			System.out.println("Invalid login");
-//                    			msg.setStatus("failure");
-//                    			
-//                    			// Send msg back
-//                                messagesOut.add(msg);
-//                                
-//                                objOutStream.writeUnshared(messagesOut);
-//                                objOutStream.flush();
-//                                System.out.println("Failure message sent.");
-//                    		}
-                    		
-                    		
-                    		
                     	} else if (msg.getType().equalsIgnoreCase("file")) { // File message
                     		// generate response
                     		Message msgR = sHelper.uploadValidation(msg);

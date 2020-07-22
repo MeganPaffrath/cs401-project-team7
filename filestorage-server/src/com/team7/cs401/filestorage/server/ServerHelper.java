@@ -4,20 +4,24 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 import com.team7.cs401.filestorage.client.ClientHelper;
 import com.team7.cs401.filestorage.client.FileHandler;
 import com.team7.cs401.filestorage.client.Message;
 
+
 public class ServerHelper {
 	
 	private AllUsers allUsers = new AllUsers();
+	
 
 	public ServerHelper() {
 		allUsers.loadData("AllUsers.txt");
 		
 	}
+	
 	
 	/*
 	 * Checks if user is valid
@@ -47,8 +51,12 @@ public class ServerHelper {
 	 * 
 	 */
 	public Message newUserValidation(Message msg) {
-		// if user does not yet exist:
-		msg.setStatus("valid");
+		String username = msg.getText1();
+		User existingUser = allUsers.getUser(username);
+		if (existingUser == null) {
+			// if user does not yet exist:
+			msg.setStatus("valid");
+		}
 		// otherwise dont change status
 		return msg;
 	}
@@ -61,8 +69,13 @@ public class ServerHelper {
 	 * 
 	 */
 	public void newUser(Message msg) {
-		// if message status is valid, generate new user
+		String username = msg.getText1();
+		String password = msg.getText2();
+		String email = msg.getText3();
+		allUsers.addOrModifyUser(username, password, email);
+		allUsers.save("AllUsers.txt");
 	}
+	
 	
 	/*
 	 * logs the user out

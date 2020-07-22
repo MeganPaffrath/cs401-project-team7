@@ -105,6 +105,12 @@ public class ServerCommunicator {
                     		// if user created, make directory for them as well.
                     		File newFile = new File("allfiles/" + msg.getText1());
                     		newFile.mkdir();
+                    		// within this folder make an example file
+                    		File newInnerFile = new File("allfiles/" + msg.getText1() + "/firstFile.txt");
+                    		String str = "This is your first file!";
+                    	    BufferedWriter writer = new BufferedWriter(new FileWriter(newInnerFile));
+                    	    writer.write(str);
+                    	    writer.close();
                     		
                     		// send the msg back
                     		messagesOut.add(msg);

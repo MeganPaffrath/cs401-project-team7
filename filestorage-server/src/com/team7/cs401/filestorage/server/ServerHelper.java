@@ -155,8 +155,7 @@ public class ServerHelper {
 	 * Lets user change password and email, not username
 	 * 
 	 * @param Message
-	 * @return Message with status "success"
+	 * @return Message in format of acountSettingsResponse
 	 */
-	public Message changePassword(Message msg) {return null;}
-	public Message changeEmail(Message msg) {return null;}
+	public Message changeAccountSettings(Message msg) {return null;}
 }

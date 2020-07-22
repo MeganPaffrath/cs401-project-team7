@@ -2,12 +2,18 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.team7.cs401.filestorage.client.Message;
 import com.team7.cs401.filestorage.server.ServerHelper;
 
 public class ServerHelperTest {
+	ServerHelper sHelper;
+	@Before
+	public void testInit() {
+		sHelper = new ServerHelper();
+	}
 	
 	// START: LOGIN / SIGNUP / LOGOUT --------------------------------------------------------------------------------v
 	// Login
@@ -31,7 +37,7 @@ public class ServerHelperTest {
 	@Test
 	public void test_newUserValidation_lookForNew() {
 		Message inMsg = new Message("signup", "requesting", "usernameDNE", "password", "email@email.com");
-		Message newUser = ServerHelper.newUserValidation(inMsg);
+		Message newUser = sHelper.newUserValidation(inMsg);
 		
 		assertEquals("There should not be a username of `usernameDNE` in the database, should produce `signup` msg with status `valid`", "valid", newUser.getStatus());
 
@@ -40,7 +46,7 @@ public class ServerHelperTest {
 	@Test
 	public void test_newUserValidation_userExists() {
 		Message inMsg = new Message("signup", "requesting", "username", "password", "goodemail@email.com");
-		Message newUser = ServerHelper.newUserValidation(inMsg);
+		Message newUser = sHelper.newUserValidation(inMsg);
 		
 		assertEquals("There should already be a username of `username` in the database, should produce `signup` msg with status `invalid`", "invalid", newUser.getStatus());
 	}

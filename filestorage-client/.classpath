@@ -8,6 +8,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/cs401-project-team7/filestorage-client/bin"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

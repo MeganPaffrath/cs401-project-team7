@@ -18,6 +18,7 @@ public class AllUsers {
 			if ( user.getUserName().equals(username)){
 				//System.out.println(username + "," + user.getPassword());
 				System.out.println("Found User: "+ username);
+				
 				return user;
 			}
 		}
@@ -39,6 +40,8 @@ public class AllUsers {
 			}
 		}
 	}
+	
+
 	
 	public void save(String sourceName) {
 		try {
@@ -80,6 +83,22 @@ public class AllUsers {
 			e.printStackTrace();
 			System.out.println("File is not found.");
 		}
+	}
+	
+	//modify account 
+	public void changeAccountSettings(String password, String email,String username) {
+		User existingUser = getUser(username);
+		for (User user: users) {
+		if ( user.getUserName().equals(username)) {
+			user.setPassword(password);
+			user.setUserEmail(email);
+		}}
+		
+	}
+	// logging user that are loged in 
+	public void logEvent(String username, String logIN) {
+		
+		
 	}
 
 	

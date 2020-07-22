@@ -149,7 +149,10 @@ public class ServerHelper {
 	
 	
 	public Message setValidUser(Message msg) {return null;}
-	public void logEvent(String event) {}
+	public void logEvent(String event) {
+		
+		
+	}
 	
 	/*
 	 * Lets user change password and email, not username
@@ -157,5 +160,15 @@ public class ServerHelper {
 	 * @param Message
 	 * @return Message in format of acountSettingsResponse
 	 */
-	public Message changeAccountSettings(Message msg) {return null;}
+	// change the account settings
+	public Message changeAccountSettings(Message msg) {
+		Message msgOut;
+		String username = msg.getText1();
+		System.out.println("this is user");
+	System.out.println(username);
+		User user = allUsers.getUser(username);
+		msgOut = new Message();
+		
+		return msgOut;
+	}
 }

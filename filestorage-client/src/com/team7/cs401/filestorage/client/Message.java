@@ -1,5 +1,6 @@
 package com.team7.cs401.filestorage.client;
 
+import java.io.File;
 import java.io.Serializable;
 
 public class Message implements Serializable {
@@ -15,33 +16,64 @@ public class Message implements Serializable {
     protected byte[] file;
 
     public Message() {
-        this.type = "Undefined";
-        this.status = "Undefined";
-        this.text1 = "Undefined";
     }
 
     public Message(String type, String status, String text){
-        setType(type);
-        setStatus(status);
-        setText1(text);
+    	this.type = type;
+    	this.status = status;
+    	this.text1 = text;
     }
     
-    public Message(String type, String status, String text, String text2){
-        setType(type);
-        setStatus(status);
-        setText1(text);
-        setText2(text2);
-    }
-    public Message(String type, String status, String text, String text2, String text3){
-        setType(type);
-        setStatus(status);
-        setText1(text);
-        setText2(text2);
-        setText3(text3);
-    }
-
-    private void setType(String type){
+    public Message(String type, String status, String text1, String text2){
     	this.type = type;
+    	this.status = status;
+    	this.text1 = text1;
+    	this.text2 = text2;
+    }
+    public Message(String type, String status, String text1, String text2, String text3){
+    	this.type = type;
+    	this.status = status;
+    	this.text1 = text1;
+    	this.text2 = text2;
+    	this.text3 = text3;
+    }
+    public Message(String type, String status, String text1, byte[] file){
+    	this.type = type;
+    	this.status = status;
+    	this.text1 = text1;
+    	this.file = file;
+    }
+    
+    public Message(String type, String status, String text1, String[] textArray){
+    	this.type = type;
+    	this.status = status;
+    	this.text1 = text1;
+    	this.textArray = textArray;
+    }
+    
+    public Message(String type, String status, String text1, String text2, byte[] file){
+    	this.type = type;
+    	this.status = status;
+    	this.text1 = text1;
+    	this.text2 = text2;
+    	this.file = file;
+    }
+    
+    public Message(String type, String status, String text1, String text2, String text3, byte[] file){
+    	this.type = type;
+    	this.status = status;
+    	this.text1 = text1;
+    	this.text2 = text2;
+    	this.text3 = text3;
+    	this.file = file;
+    }
+    
+    public Message(String type, String status, String text1, String text2, String[] textArr){
+    	this.type = type;
+    	this.status = status;
+    	this.text1 = text1;
+    	this.text2 = text2;
+    	this.textArray = textArr;
     }
 
     public void setStatus(String status){
@@ -79,5 +111,19 @@ public class Message implements Serializable {
     public String getText3(){
     	return text3;
     }
-
+    
+    public byte[] getFileBytes() {
+    	return file;
+    }
+    
+    public String getTextArray() {
+    	String out = "";
+    	for (String i : textArray) {
+    		out += i + " ";
+    	}
+    	
+    	return out;
+    }
 }
+
+

@@ -296,6 +296,46 @@ public class ClientCommunicator {
 	            	case SHARE:
 	//            		cHelper.sendToServer("test send");
 	            		System.out.println("TRY TO SHARE A FILE");
+	            		Boolean endList = false;
+	            		int shareCount = 0;
+	            		// Hard-coded shareList array size as 10,000
+	            		String[] shareList = new String[10000];
+	            		
+	            		System.out.println("Enter the file name:\t");
+	            		String file_name = myScnr.nextLine();
+	            		while(endList == false) {
+		            		System.out.println("Enter the username of the account to be shared with *OR* Hit ENTER to END\n\t:");   
+		            		String inputUsername = myScnr.nextLine();
+		            		if (inputUsername.isEmpty()){
+		            			endList = true;
+		            		}else {
+			            		shareList[shareCount] = inputUsername;
+			            		shareCount++;
+		            		}
+	            		}
+	            		if(shareCount > 0) {
+	            			Message msgShare = ClientHelper.generateShare(user, file_name, shareList);
+	            			messagesOut.clear();
+		                	messagesOut.add(msgShare);
+		                	objOutStream.writeUnshared(messagesOut);
+		                    objOutStream.flush();
+		                    
+		            		messagesIn = (List<Message>) objInStream.readObject();
+		                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+		                    
+		                    for (Message m : messagesIn) {
+		                    	System.out.println("Recieved msg type: " + m.getType());
+		                    	Boolean found = ClientHelper.handleShare(m);
+		                    	
+		                    	// if valid msg
+		                    	if (found) {
+		                    		System.out.println("File: '" +  file_name + "' has been granted to share with other user accounts.\n");
+		                    		break;
+		                    	}
+		                    }
+	            		}
+
+	            		
 	            		break;
 	            	case DELETE:
 	//            		cHelper.sendToServer("test send");

@@ -153,11 +153,6 @@ public class ServerCommunicator {
                     		
                     	} else if (msg.getType().equalsIgnoreCase("logout")) {
                     		System.out.println("Recieved logout");
-                    		
-                    		// log out
-                    		/*
-                    		 * IF KEEPING TRACK OF CURRENT USERS, REMOVE THIS USER
-                    		 */
                     		loggedOut = true;
                     		break;
                     	} else {

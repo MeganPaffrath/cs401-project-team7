@@ -47,18 +47,18 @@ public class ServerHelper {
 	 * If user can be generated, sets msg status to "valid"
 	 * 
 	 * @param Message
-	 * @return msg with status "valid" if valid
 	 * 
 	 */
-	public Message newUserValidation(Message msg) {
+	public void newUserValidation(Message msg) {
 		String username = msg.getText1();
 		User existingUser = allUsers.getUser(username);
 		if (existingUser == null) {
 			// if user does not yet exist:
 			msg.setStatus("valid");
+			System.out.println("status changed to" + msg.getStatus());
+		} else {
+			msg.setStatus("invalid");
 		}
-		// otherwise dont change status
-		return msg;
 	}
 	
 	/*
@@ -69,11 +69,13 @@ public class ServerHelper {
 	 * 
 	 */
 	public void newUser(Message msg) {
-		String username = msg.getText1();
-		String password = msg.getText2();
-		String email = msg.getText3();
-		allUsers.addOrModifyUser(username, password, email);
-		allUsers.save("AllUsers.txt");
+		if (msg.getStatus().contentEquals("valid")) {
+			String username = msg.getText1();
+			String password = msg.getText2();
+			String email = msg.getText3();
+			allUsers.addOrModifyUser(username, password, email);
+			allUsers.save("AllUsers.txt");
+		}
 	}
 	
 	

@@ -93,6 +93,8 @@ public class ClientCommunicator {
 	                    	if (ClientHelper.handleSignUp(msg) ) {
 	                    		messagesIn.removeAll(messagesIn);
 	                    		System.out.println("\nAccount successfully created!");
+	                    		user.setUserName(username);
+	                    		user.login();
 	                    		break;
 	                    	}
 	                    	else {

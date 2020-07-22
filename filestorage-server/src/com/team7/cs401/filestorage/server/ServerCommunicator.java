@@ -102,6 +102,10 @@ public class ServerCommunicator {
                     		// make user if valid
                     		sHelper.newUser(msg);
                     		
+                    		// if user created, make directory for them as well.
+                    		File newFile = new File("allfiles/" + msg.getText1());
+                    		newFile.mkdir();
+                    		
                     		// send the msg back
                     		messagesOut.add(msg);
 		                      

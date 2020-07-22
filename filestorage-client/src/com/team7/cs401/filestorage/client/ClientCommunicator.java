@@ -339,8 +339,32 @@ public class ClientCommunicator {
 	            		break;
 	            	case DELETE:
 	//            		cHelper.sendToServer("test send");
-	            		System.out.println("TRY TO DELETE A FILE");
+	            		System.out.println("TRY TO DELETE A FILE\n");
+	            		System.out.println("Enter the file name:\t");
+	            		String userFile = myScnr.nextLine();
+	            		if(!userFile.isEmpty()) {
+		            		Message msgDelete = ClientHelper.generateDeleteItem(user, userFile);
+	            			messagesOut.clear();
+		                	messagesOut.add(msgDelete);
+		                	objOutStream.writeUnshared(messagesOut);
+		                    objOutStream.flush();
+		                    
+		            		messagesIn = (List<Message>) objInStream.readObject();
+		                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+		                    
+		                    for (Message m : messagesIn) {
+		                    	System.out.println("Recieved msg type: " + m.getType());
+		                    	Boolean found = ClientHelper.handleDeleteItem(m);
+		                    	
+		                    	// if valid msg
+		                    	if (found) {
+		                    		System.out.println("File: '" +  userFile + "' has been deleted.\n");
+		                    		break;
+		                    	}
+		                    }
+	            		}
 	            		break;
+	            		
 	            	case SETTING:
 	//            		cHelper.sendToServer("test send");
 	            		System.out.println("CHANGE SETTING OF THE USER");

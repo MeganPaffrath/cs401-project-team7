@@ -78,14 +78,6 @@ public class ServerHelper {
 		}
 	}
 	
-	
-	/*
-	 * logs the user out
-	 * 
-	 * @param Message
-	 */
-	public void logout(Message msg) {}
-	
 	/*
 	 * @param msg
 	 * @return Message showing if upload was vailid/invalid
@@ -115,6 +107,12 @@ public class ServerHelper {
 		return msgR;
 	}
 	
+	/*
+	 * Shares a file with the specified users
+	 * 
+	 * @param Message of format generateShare
+	 * @return Message of format shareStatus
+	 */
 	public Message grantFileAccess(Message msg) {return null;}
 	
 	
@@ -147,8 +145,6 @@ public class ServerHelper {
 		return msgOut;
 	}
 	
-	
-	public Message setValidUser(Message msg) {return null;}
 	public void logEvent(String event) {}
 	
 	/*

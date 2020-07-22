@@ -124,6 +124,10 @@ public class Message implements Serializable {
     	
     	return out;
     }
+    
+    public String[] getTextArrayFull() {
+    	return textArray;
+    }
 }
 
 

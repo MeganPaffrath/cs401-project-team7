@@ -149,7 +149,48 @@ public class ClientHelperTest {
 	// END: ACCOUNT SETTINGS ------------------------------------------------------------------------------------^
 	
 	
-	 // START: FILE HANDLING ----------------------------------------------------------------------------------v
+	// START: FILE HANDLING ----------------------------------------------------------------------------------v
+	// View files
+	@Test
+	public void test_generateViewUserFiles() {
+		Message msg = ClientHelper.generateViewUserFiles(user);
+		
+		assertEquals("Type should be `mainDirRequest`", "mainDirRequest", msg.getType());
+		assertEquals("Status shoudl be `requesting`", "requesting", msg.getStatus());
+		assertEquals("Text1 should be <username>", user.getUserName(), msg.getText1());
+	}
+	
+	@Test
+	public void test_handleViewUserFiles_goodResp() {
+		String[] allFiles = {"file.txt", "file2.txt"};
+		Message msgR = new Message("mainDir", "dirMsg", "username", allFiles);
+		
+		boolean handled = ClientHelper.handleViewUserFiles(msgR);
+		
+		assertTrue("Good response with status of dirMsg should return true", handled);
+	}
+	
+
+	@Test
+	public void test_handleViewUserFiles_badResp() {
+		String[] allFiles = {"file.txt", "file2.txt"};
+		Message msgR = new Message("mainDir", "dirMsgNot", "username", allFiles);
+		
+		boolean handled = !ClientHelper.handleViewUserFiles(msgR);
+		
+		assertTrue("Bad response without status of dirMsg should return false", handled);
+	}
+	
+	@Test
+	public void test_generateOpenFolder_goodMsg() {
+		Message msg = ClientHelper.generateOpenFolder(user, "UUID");
+		
+		assertEquals("generateOpenFolder should make msg of type `openFolder`", "openFolder", msg.getType());
+		assertEquals("generateOpenFolder should make msg with status `requesting`", "requesting", msg.getStatus());
+		assertEquals("generateOpenFolder should make msg with text1 <username>", user.getUserName(), msg.getText1());
+		fail("generate open folder should use UUID to help find folder");
+	}
+	
 	@Test
 	public void test_generateDownload_goodReq() {
 		String testFile = "test.txt";

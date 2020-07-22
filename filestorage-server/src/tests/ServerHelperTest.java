@@ -16,7 +16,7 @@ public class ServerHelperTest {
 		sHelper = new ServerHelper();
 	}
 	
-	// START: LOGIN / SIGNUP / LOGOUT --------------------------------------------------------------------------------v
+	// START: LOGIN / SIGNUP --------------------------------------------------------------------------------v
 	// Login
 	@Test
 	public void test_validateLogin_validLogin() {
@@ -51,15 +51,7 @@ public class ServerHelperTest {
 		
 		assertEquals("There should already be a username of `username` in the database, should produce `signup` msg with status `invalid`", "invalid", inMsg.getStatus());
 	}
-	
-	// Logout
-	@Test
-	public void test_logout_works() {
-		fail("Test not yet implemented");
-	}
-
-	
-	// END: LOGIN / SIGNUP / LOGOUT ----------------------------------------------------------------------------------^
+	// END: LOGIN / SIGNUP ----------------------------------------------------------------------------------^
 	
 	// START: ACCOUNT SETTINGS -------------------------------------------------------------------------------------v
 	// password change
@@ -104,4 +96,42 @@ public class ServerHelperTest {
 		allUsers.addOrModifyUser("username", "password", "usernameemail@email.com");
 	}
 	// END: ACCOUNT SETTINGS -------------------------------------------------------------------------------------^
+	
+	// START: FILE HANDLING ----------------------------------------------------------------------------------v
+	
+	// Share files
+	@Test
+	public void test_grantFileAccess_shareValidUsers() {
+		String[] shareWith = {"jim", "bob", "kim"};
+		Message inMsg = new Message("share", "requesting", "username", "UUID", shareWith);
+		
+		Message msgR = sHelper.grantFileAccess(inMsg);
+		
+		assertEquals("Response type should be `share`", "share", msgR.getType());
+		assertEquals("Response status should be `shared` because users exist", "shared", msgR.getStatus());
+		assertEquals("Response text1 should be <username>", "username", msgR.getText1());
+//		assertEquals("Response text1 should be UUID", null, msgR.getText2());
+		for (int i=0; i<shareWith.length; i++) {
+			assertEquals("Response textArray should contain all the users input", shareWith[i], msgR.getTextArrayFull()[i]);
+		}
+		
+	}
+	
+	@Test
+	public void test_grantFileAccess_shareInvalidUsers() {
+		String[] shareWith = {"jimNo", "bobNo", "kimNo"};
+		Message inMsg = new Message("share", "requesting", "username", "UUID", shareWith);
+		
+		Message msgR = sHelper.grantFileAccess(inMsg);
+		
+		assertEquals("Response type should be `share`", "share", msgR.getType());
+		assertEquals("Response status should be `failure` because users do not exist", "failure", msgR.getStatus());
+		assertEquals("Response text1 should be <username>", "username", msgR.getText1());
+//		assertEquals("Response text1 should be UUID", null, msgR.getText2());
+		for (int i=0; i<shareWith.length; i++) {
+			assertEquals("Response textArray should contain all the users input", shareWith[i], msgR.getTextArrayFull()[i]);
+		}
+	}
+	
+	// END: FILE HANDLING ----------------------------------------------------------------------------------^
 }

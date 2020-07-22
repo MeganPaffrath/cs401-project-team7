@@ -4,20 +4,30 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 import com.team7.cs401.filestorage.client.ClientHelper;
 import com.team7.cs401.filestorage.client.FileHandler;
 import com.team7.cs401.filestorage.client.Message;
 
+
 public class ServerHelper {
 	
-	private AllUsers allUsers = new AllUsers();
+	private static AllUsers allUsers = new AllUsers();
+	
+	static {
+		// I'm only doing this because we want our methods below to to be static
+		// this is an antipattern (or so I'm told)
+		allUsers.loadData("AllUsers.txt");
+	}
 
 	public ServerHelper() {
-		allUsers.loadData("AllUsers.txt");
+		
 		
 	}
+	
+	
 	
 	/*
 	 * Checks if user is valid
@@ -61,8 +71,13 @@ public class ServerHelper {
 	 * 
 	 */
 	public static void newUser(Message msg) {
-		// if message status is valid, generate new user
+		String username = msg.getText1();
+		String password = msg.getText2();
+		String email = msg.getText3();
+		allUsers.addOrModifyUser(username, password, email);
+		allUsers.save("AllUsers.txt");
 	}
+	
 	
 	/*
 	 * logs the user out

@@ -2,6 +2,8 @@ package com.team7.cs401.filestorage.server;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -26,6 +28,25 @@ public class AllUsers {
 		
 		this.users.add(new User(username,password, email));
 		
+	}
+	
+	public void save(String sourceName) {
+		try {
+			Path path = Paths.get("src/" + sourceName);
+			FileWriter fw = new FileWriter(path.toFile().getAbsolutePath());
+			if (!users.isEmpty()) {
+				for (int i = 0; i < users.size(); i++) {
+					User user = users.get(i);
+					fw.write(user.getUserName() + "," + user.getPassword() + "," + user.getUserEmail());
+					fw.write(System.lineSeparator());
+				}
+			}
+
+			fw.close();
+			System.out.println("Changes to " + sourceName + " saved.");
+		} catch (IOException e) {
+			System.err.println("Error saving: " + e);
+		}
 	}
 	
 	public void loadData(String filename) {

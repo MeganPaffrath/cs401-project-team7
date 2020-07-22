@@ -46,7 +46,7 @@ public class ServerHelper {
 	 * @return msg with status "valid" if valid
 	 * 
 	 */
-	public static Message newUserValidation(Message msg) {
+	public Message newUserValidation(Message msg) {
 		// if user does not yet exist:
 		msg.setStatus("valid");
 		// otherwise dont change status
@@ -60,7 +60,7 @@ public class ServerHelper {
 	 * @param Message from newUserValidation
 	 * 
 	 */
-	public static void newUser(Message msg) {
+	public void newUser(Message msg) {
 		// if message status is valid, generate new user
 	}
 	
@@ -69,13 +69,13 @@ public class ServerHelper {
 	 * 
 	 * @param Message
 	 */
-	public static void logout(Message msg) {}
+	public void logout(Message msg) {}
 	
 	/*
 	 * @param msg
 	 * @return Message showing if upload was vailid/invalid
 	 */
-	public static Message uploadValidation(Message msg) {
+	public Message uploadValidation(Message msg) {
 		Message msgR;
 		try {
 			// get received file
@@ -100,10 +100,10 @@ public class ServerHelper {
 		return msgR;
 	}
 	
-	public static Message grantFileAccess(Message msg) {return null;}
+	public Message grantFileAccess(Message msg) {return null;}
 	
 	
-	public static Message grantDownloadRequest(Message msg) {
+	public Message grantDownloadRequest(Message msg) {
 		Message msgOut;
 		// Get path and filename
 		String user = msg.getText1();
@@ -133,8 +133,8 @@ public class ServerHelper {
 	}
 	
 	
-	public static Message setValidUser(Message msg) {return null;}
-	public static void logEvent(String event) {}
+	public Message setValidUser(Message msg) {return null;}
+	public void logEvent(String event) {}
 	
 	/*
 	 * Lets user change password and email, not username
@@ -142,6 +142,6 @@ public class ServerHelper {
 	 * @param Message
 	 * @return Message with status "success"
 	 */
-	public static Message changePassword(Message msg) {return null;}
-	public static Message changeEmail(Message msg) {return null;}
+	public Message changePassword(Message msg) {return null;}
+	public Message changeEmail(Message msg) {return null;}
 }

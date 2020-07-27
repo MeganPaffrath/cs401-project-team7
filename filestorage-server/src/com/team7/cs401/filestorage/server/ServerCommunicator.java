@@ -21,6 +21,13 @@ import com.team7.cs401.filestorage.client.Message;
 
 public class ServerCommunicator {
 	private static int threadCount = 25;
+	
+	// utilize this later to keep track of current users
+	public String[] users; 
+	public static List<Message> outMsg = new ArrayList<>();
+    public static List<Message> inMsg = new ArrayList<>();
+    private static ObjectOutputStream objOutStream;
+    private static ObjectInputStream objInStream;
 
     public static void main(String[] args) throws Exception {
     	
@@ -51,32 +58,27 @@ public class ServerCommunicator {
             	// Input
             	// get input stream from connected socket & object input
                 InputStream in = socket.getInputStream();
-                ObjectInputStream objInStream = new ObjectInputStream(in);
+                objInStream = new ObjectInputStream(in);
                 
                 // Output
                 // get output stream from connected socket & object output
                 OutputStream out = socket.getOutputStream();
-                ObjectOutputStream objOutStream = new ObjectOutputStream(out);
-                
-                
-                // Read list of msgs from the socket
-                List<Message> messagesOut = new ArrayList<>();
-                List<Message> messagesIn = new ArrayList<>();
-             // Communication fully set up -----------------------------------------------^
+                objOutStream = new ObjectOutputStream(out);
+                // Communication fully set up -----------------------------------------------^
                 
                 // Instantiate ServerHelper
                 ServerHelper sHelper = new ServerHelper();
 
                 boolean loggedOut = false;
                 while (!loggedOut) { // run for user until they log out
-                	messagesIn = (List<Message>) objInStream.readObject();
+                	inMsg = (List<Message>) objInStream.readObject();
 
-                    System.out.println("Received [" + messagesIn.size() + "] messages from: " + socket);
+                    System.out.println("Received [" + inMsg.size() + "] messages from: " + socket);
                     
                     System.out.println("All messages:");
-                    messagesIn.forEach(msg -> printMessage(msg));
+                    inMsg.forEach(msg -> printMessage(msg));
                     // iterate
-                	for (Message msg : messagesIn) {
+                	for (Message msg : inMsg) {
                     	System.out.println("Recieved: " + msg.getType());
                     	
                     	// Login, logout, or message
@@ -87,11 +89,7 @@ public class ServerCommunicator {
                     		Message msgR = sHelper.validateLogin(msg);
                     		
                 			// send back response
-		                    messagesOut.add(msg);
-		                      
-		                    objOutStream.writeUnshared(messagesOut);
-		                    objOutStream.flush();
-		                    System.out.println("Sending login response");
+                    		sendMsgToClient(msgR);
 	                          
                     	} else if (msg.getType().equalsIgnoreCase("signup")) { // this is where the other msgs will go
                     		System.out.println("Recieved signup request");
@@ -113,17 +111,16 @@ public class ServerCommunicator {
                     	    writer.close();
                     		
                     		// send the msg back
-                    		messagesOut.add(msg);
-		                      
-		                    objOutStream.writeUnshared(messagesOut);
+                    		outMsg.add(msg);
+		                    objOutStream.writeUnshared(outMsg);
 		                    objOutStream.flush();
 		                    System.out.println("Sending new user response msg");
                     	} else if (msg.getType().equalsIgnoreCase("file")) { // File message
                     		// generate response
                     		Message msgR = sHelper.uploadValidation(msg);
                     		// send response
-                            messagesOut.add(msgR);
-                            objOutStream.writeUnshared(messagesOut);
+                            outMsg.add(msgR);
+                            objOutStream.writeUnshared(outMsg);
                             objOutStream.flush();
                     	} else if (msg.getType().equalsIgnoreCase("fileReq")) { // Request to download a file
                     		System.out.println("Recieved a file download request");
@@ -131,9 +128,9 @@ public class ServerCommunicator {
                     			// make response msg
                         		Message msgR =sHelper.grantDownloadRequest(msg);
                         		// send the message
-                    			messagesOut.clear();
-                            	messagesOut.add(msgR);
-                            	objOutStream.writeUnshared(messagesOut);
+                    			outMsg.clear();
+                            	outMsg.add(msgR);
+                            	objOutStream.writeUnshared(outMsg);
                                 objOutStream.flush();
                     		} catch (Exception e) {
                     			System.out.println("server could not find file");
@@ -146,8 +143,8 @@ public class ServerCommunicator {
                     		Message msgDir = new Message("mainDir", "dirMsg", user, fileNames);
                     		
                     		// send msg back
-                    		messagesOut.add(msgDir);
-                            objOutStream.writeUnshared(messagesOut);
+                    		outMsg.add(msgDir);
+                            objOutStream.writeUnshared(outMsg);
                             objOutStream.flush();
                     	} else if (msg.getType().equalsIgnoreCase("OTHER")) { // this is where the other msgs will go
                     		
@@ -162,8 +159,8 @@ public class ServerCommunicator {
 
                     
                     // empty recieved messages
-                    messagesIn.clear();
-                    messagesOut.clear();
+                    inMsg.clear();
+                    outMsg.clear();
                     objOutStream.reset();
                
                     System.out.println("Clearing messages");
@@ -187,5 +184,15 @@ public class ServerCommunicator {
     private static void printMessage(Message msg){
         System.out.println("Type: " + msg.getType());
         System.out.println("Text: " + msg.getText1());
+    }
+    
+    private static void sendMsgToClient(Message msg) throws IOException {
+    	outMsg.add(msg);
+        objOutStream.writeUnshared(outMsg);
+        objOutStream.flush();
+    }
+    
+    private static void recieveMsgFromClient(Message msg) {
+    	// objInStream needs to be declared in diff location for this to work
     }
 }

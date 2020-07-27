@@ -24,6 +24,8 @@ public class ClientCommunicator {
 	
 	private static List<Message> outMsg = new ArrayList<>();
     private static List<Message> inMsg = new ArrayList<>();
+    private static ObjectOutputStream objOutStream;
+    private static ObjectInputStream objInStream;
 
 
 	public static void main(String[] args) throws Exception {
@@ -41,11 +43,11 @@ public class ClientCommunicator {
             OutputStream outputStream = socket.getOutputStream();
             
             // Create object output stream
-            ObjectOutputStream objOutStream = new ObjectOutputStream(outputStream);
+            objOutStream = new ObjectOutputStream(outputStream);
             
             // have input
             InputStream inputStream = socket.getInputStream();
-            ObjectInputStream objInStream = new ObjectInputStream(inputStream);
+            objInStream = new ObjectInputStream(inputStream);
             // Communication fully set up -----------------------------------------------^
             
             // User input collector
@@ -110,10 +112,7 @@ public class ClientCommunicator {
 	                	Message loginMsg = ClientHelper.generateLogin(username, password);
 	                	
 	                	// send the message
-	                	outMsg.clear();
-	                	outMsg.add(loginMsg);
-	                	objOutStream.writeUnshared(outMsg);
-	                    objOutStream.flush();
+	                	sendMsgToServer(loginMsg);
 	                    
 	                    // rec response
 	                    inMsg = (List<Message>) objInStream.readObject();
@@ -182,6 +181,7 @@ public class ClientCommunicator {
 	            		Message msg = ClientHelper.generateViewUserFiles(user);
 	            		
 	            		// send message
+	            		
 	            		outMsg.clear();
 	                	outMsg.add(msg);
 	                	objOutStream.writeUnshared(outMsg);
@@ -412,16 +412,15 @@ public class ClientCommunicator {
         System.out.println("Text: " + msg.getText1());
     }
     
-    private static void sendMsgToServer(Message msg) {
-    	// objOutStream needs to be declared in diff location for this to work
-//    	outMsg.clear();
-//    	outMsg.add(loginMsg);
-//    	objOutStream.writeUnshared(outMsg);
-//        objOutStream.flush();
+    private static void sendMsgToServer(Message msg) throws IOException {
+    	outMsg.clear();
+    	outMsg.add(msg);
+    	objOutStream.writeUnshared(outMsg);
+        objOutStream.flush();
     }
     
     private static void recieveMsgFromServer(Message msg) {
-    	// objInStream needs to be declared in diff location for this to work
+    	// might need to change plan here?
     }
   
 }

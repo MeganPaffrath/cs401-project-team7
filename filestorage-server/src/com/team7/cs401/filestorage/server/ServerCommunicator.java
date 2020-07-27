@@ -26,6 +26,8 @@ public class ServerCommunicator {
 	public String[] users; 
 	public static List<Message> outMsg = new ArrayList<>();
     public static List<Message> inMsg = new ArrayList<>();
+    private static ObjectOutputStream objOutStream;
+    private static ObjectInputStream objInStream;
 
     public static void main(String[] args) throws Exception {
     	
@@ -56,12 +58,12 @@ public class ServerCommunicator {
             	// Input
             	// get input stream from connected socket & object input
                 InputStream in = socket.getInputStream();
-                ObjectInputStream objInStream = new ObjectInputStream(in);
+                objInStream = new ObjectInputStream(in);
                 
                 // Output
                 // get output stream from connected socket & object output
                 OutputStream out = socket.getOutputStream();
-                ObjectOutputStream objOutStream = new ObjectOutputStream(out);
+                objOutStream = new ObjectOutputStream(out);
                 // Communication fully set up -----------------------------------------------^
                 
                 // Instantiate ServerHelper
@@ -87,11 +89,7 @@ public class ServerCommunicator {
                     		Message msgR = sHelper.validateLogin(msg);
                     		
                 			// send back response
-		                    outMsg.add(msg);
-		                      
-		                    objOutStream.writeUnshared(outMsg);
-		                    objOutStream.flush();
-		                    System.out.println("Sending login response");
+                    		sendMsgToClient(msgR);
 	                          
                     	} else if (msg.getType().equalsIgnoreCase("signup")) { // this is where the other msgs will go
                     		System.out.println("Recieved signup request");
@@ -188,8 +186,10 @@ public class ServerCommunicator {
         System.out.println("Text: " + msg.getText1());
     }
     
-    private static void sendMsgToClient(Message msg) {
-    	// objOutStream needs to be declared in diff location for this to work
+    private static void sendMsgToClient(Message msg) throws IOException {
+    	outMsg.add(msg);
+        objOutStream.writeUnshared(outMsg);
+        objOutStream.flush();
     }
     
     private static void recieveMsgFromClient(Message msg) {

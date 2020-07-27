@@ -182,11 +182,6 @@ public class ClientCommunicator {
 	            		
 	            		// send message
 	            		
-	            		outMsg.clear();
-	                	outMsg.add(msg);
-	                	objOutStream.writeUnshared(outMsg);
-	                    objOutStream.flush();
-	            		
 	            		// Receive response
 	                    inMsg = (List<Message>) objInStream.readObject();
 	                    System.out.println("Received [" + inMsg.size() + "] response messages from: " + socket);
@@ -224,10 +219,7 @@ public class ClientCommunicator {
 	            			System.out.println("message made");
 	            			
 	            			// send the message
-	            			outMsg.clear();
-		                	outMsg.add(msgUpload);
-		                	objOutStream.writeUnshared(outMsg);
-		                    objOutStream.flush();
+	            			sendMsgToServer(msgUpload);
 		                    
 		                    // rec response
 		                    inMsg = (List<Message>) objInStream.readObject();
@@ -266,10 +258,7 @@ public class ClientCommunicator {
 	            		Message msgDownload = ClientHelper.generateDownload(user, fileName);
 	            		
 	            		// send the message
-	            		outMsg.clear();
-	                	outMsg.add(msgDownload);
-	                	objOutStream.writeUnshared(outMsg);
-	                    objOutStream.flush();
+	            		sendMsgToServer(msgDownload);
 	            		
 	            		// recieve response
 	            		inMsg = (List<Message>) objInStream.readObject();
@@ -344,10 +333,9 @@ public class ClientCommunicator {
 	            		String userFile = myScnr.nextLine();
 	            		if(!userFile.isEmpty()) {
 		            		Message msgDelete = ClientHelper.generateDeleteItem(user, userFile);
-	            			outMsg.clear();
-		                	outMsg.add(msgDelete);
-		                	objOutStream.writeUnshared(outMsg);
-		                    objOutStream.flush();
+		            		
+		            		// send the message 
+		            		sendMsgToServer(msgDelete);
 		                    
 		            		inMsg = (List<Message>) objInStream.readObject();
 		                    System.out.println("Received [" + inMsg.size() + "] response messages from: " + socket);

@@ -21,6 +21,9 @@ import com.team7.cs401.filestorage.client.Message;
 
 public class ServerCommunicator {
 	private static int threadCount = 25;
+	
+	// utilize this later to keep track of current users
+	public String[] users; 
 
     public static void main(String[] args) throws Exception {
     	

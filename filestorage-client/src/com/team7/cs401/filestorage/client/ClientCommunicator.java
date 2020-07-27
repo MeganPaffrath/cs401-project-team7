@@ -47,8 +47,8 @@ public class ClientCommunicator {
             ObjectInputStream objInStream = new ObjectInputStream(inputStream);
             
             // List of Message objs
-            List<Message> messagesOut = new ArrayList<>();
-            List<Message> messagesIn = new ArrayList<>();
+            List<Message> outMsg = new ArrayList<>();
+            List<Message> inMsg = new ArrayList<>();
             // Communication fully set up -----------------------------------------------^
             
             // User input collector
@@ -80,18 +80,18 @@ public class ClientCommunicator {
             			}
             			System.out.println("password:\t");
             			String password = myScnr.nextLine();
-	                	messagesOut.clear();
+	                	outMsg.clear();
 	                	Message signup_msg = ClientHelper.generateSignUp(username, password, email);
-	                	messagesOut.add(signup_msg);
-	                	objOutStream.writeUnshared(messagesOut);
+	                	outMsg.add(signup_msg);
+	                	objOutStream.writeUnshared(outMsg);
 	                    objOutStream.flush();
-	                    messagesIn = (List<Message>) objInStream.readObject();
-	                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+	                    inMsg = (List<Message>) objInStream.readObject();
+	                    System.out.println("Received [" + inMsg.size() + "] response messages from: " + socket);
 	                    
-	                    for (Message msg : messagesIn) {
+	                    for (Message msg : inMsg) {
 	                    	// if valid login
 	                    	if (ClientHelper.handleSignUp(msg) ) {
-	                    		messagesIn.removeAll(messagesIn);
+	                    		inMsg.removeAll(inMsg);
 	                    		System.out.println("\nAccount successfully created!");
 	                    		user.setUserName(username);
 	                    		user.login();
@@ -110,29 +110,30 @@ public class ClientCommunicator {
 	                	String password = myScnr.nextLine();
 	                	
 	                	// pass a login message to server
-	                	messagesOut.clear();
 	                	Message loginMsg = ClientHelper.generateLogin(username, password);
-	                	messagesOut.add(loginMsg);
-	                	//messagesOut.add(new Message("login", "incoming", username, password));
-	                	objOutStream.writeUnshared(messagesOut);
+	                	
+	                	// send the message
+	                	outMsg.clear();
+	                	outMsg.add(loginMsg);
+	                	objOutStream.writeUnshared(outMsg);
 	                    objOutStream.flush();
 	                    
 	                    // rec response
-	                    messagesIn = (List<Message>) objInStream.readObject();
-	                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+	                    inMsg = (List<Message>) objInStream.readObject();
+	                    System.out.println("Received [" + inMsg.size() + "] response messages from: " + socket);
 	                    
 	                    // for each recieved msg, process and test for successful login
-	                    for (Message msg : messagesIn) {
+	                    for (Message msg : inMsg) {
 	                    	// if valid login
 	                    	if (ClientHelper.handleLogin(msg) ) {
 	                    		user.setUserName(msg.getText1());
 	                    		user.login();
-	                    		messagesIn.removeAll(messagesIn);
+	                    		inMsg.removeAll(inMsg);
 	                    		break;
 	                    	}
 	                    }
             		}
-//                    messagesIn.removeAll(messagesIn);
+//                    inMsg.removeAll(inMsg);
             	}
             	
             	// if failure to select properly, it will just logout
@@ -162,17 +163,17 @@ public class ClientCommunicator {
 	            	case LOGOUT:
 	            		System.out.println("LOGOUT");
 	            		// pass a logout message to server
-	                	messagesOut.clear();
+	                	outMsg.clear();
 	                	Message logoutMsg = ClientHelper.logout(user);
-	                	messagesOut.add(logoutMsg);
-	                	objOutStream.writeUnshared(messagesOut);
+	                	outMsg.add(logoutMsg);
+	                	objOutStream.writeUnshared(outMsg);
 	                    objOutStream.flush();
 	                    
 	                    // end
 	                    // receive "response"
 	                    try {
-	                    	messagesIn = (List<Message>) objInStream.readObject();
-	                    	messagesIn.removeAll(messagesIn);
+	                    	inMsg = (List<Message>) objInStream.readObject();
+	                    	inMsg.removeAll(inMsg);
 	                    } catch (Exception e) {
 	                    	System.out.println("Logging out");
 	                    	running = false;
@@ -184,17 +185,17 @@ public class ClientCommunicator {
 	            		Message msg = ClientHelper.generateViewUserFiles(user);
 	            		
 	            		// send message
-	            		messagesOut.clear();
-	                	messagesOut.add(msg);
-	                	objOutStream.writeUnshared(messagesOut);
+	            		outMsg.clear();
+	                	outMsg.add(msg);
+	                	objOutStream.writeUnshared(outMsg);
 	                    objOutStream.flush();
 	            		
 	            		// Receive response
-	                    messagesIn = (List<Message>) objInStream.readObject();
-	                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+	                    inMsg = (List<Message>) objInStream.readObject();
+	                    System.out.println("Received [" + inMsg.size() + "] response messages from: " + socket);
 	                    
 	                    // go through recieved msgs
-	                    for (Message m : messagesIn) {
+	                    for (Message m : inMsg) {
 	                    	System.out.println("Recieved msg type: " + m.getType());
 	                    	Boolean found = ClientHelper.handleViewUserFiles(m);
 	                    	
@@ -203,7 +204,7 @@ public class ClientCommunicator {
 	                    		break;
 	                    	}
 	                    }
-	                    messagesIn.removeAll(messagesIn);
+	                    inMsg.removeAll(inMsg);
 	            		break;
 	            	case UPLOAD:
 	            		System.out.println("TRY TO UPLOAD A FILE");
@@ -226,17 +227,17 @@ public class ClientCommunicator {
 	            			System.out.println("message made");
 	            			
 	            			// send the message
-	            			messagesOut.clear();
-		                	messagesOut.add(msgUpload);
-		                	objOutStream.writeUnshared(messagesOut);
+	            			outMsg.clear();
+		                	outMsg.add(msgUpload);
+		                	objOutStream.writeUnshared(outMsg);
 		                    objOutStream.flush();
 		                    
 		                    // rec response
-		                    messagesIn = (List<Message>) objInStream.readObject();
-		                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+		                    inMsg = (List<Message>) objInStream.readObject();
+		                    System.out.println("Received [" + inMsg.size() + "] response messages from: " + socket);
 		                    
 		                    // for each recieved msg, check if valid
-		                    for (Message m : messagesIn) {
+		                    for (Message m : inMsg) {
 		                    	// if valid login
 		                    	if (m.getType().equals("upload")) {
 		                    		if (m.getStatus().equals("valid")) {
@@ -245,7 +246,7 @@ public class ClientCommunicator {
 		                    			System.out.println("Server failed to get file");
 		                    		}
 		                    		
-		                    		messagesIn.removeAll(messagesIn);
+		                    		inMsg.removeAll(inMsg);
 		                    		break;
 		                    	}
 		                    }
@@ -268,16 +269,16 @@ public class ClientCommunicator {
 	            		Message msgDownload = ClientHelper.generateDownload(user, fileName);
 	            		
 	            		// send the message
-	            		messagesOut.clear();
-	                	messagesOut.add(msgDownload);
-	                	objOutStream.writeUnshared(messagesOut);
+	            		outMsg.clear();
+	                	outMsg.add(msgDownload);
+	                	objOutStream.writeUnshared(outMsg);
 	                    objOutStream.flush();
 	            		
 	            		// recieve response
-	            		messagesIn = (List<Message>) objInStream.readObject();
-	                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+	            		inMsg = (List<Message>) objInStream.readObject();
+	                    System.out.println("Received [" + inMsg.size() + "] response messages from: " + socket);
 	                    
-	                    for (Message m : messagesIn) {
+	                    for (Message m : inMsg) {
 	                    	if (m.getStatus().equals("fileMsg")) {
 		                    	System.out.println("File recieved!");
 		                    	// generate the file
@@ -293,7 +294,7 @@ public class ClientCommunicator {
 		                    	System.out.println("Message response status was: " + m.getStatus());
 		                    }
 	                    }
-	                    messagesIn.removeAll(messagesIn);
+	                    inMsg.removeAll(inMsg);
 	            		break;
 	            	case SHARE:
 	//            		cHelper.sendToServer("test send");
@@ -317,15 +318,15 @@ public class ClientCommunicator {
 	            		}
 	            		if(shareCount > 0) {
 	            			Message msgShare = ClientHelper.generateShare(user, file_name, shareList);
-	            			messagesOut.clear();
-		                	messagesOut.add(msgShare);
-		                	objOutStream.writeUnshared(messagesOut);
+	            			outMsg.clear();
+		                	outMsg.add(msgShare);
+		                	objOutStream.writeUnshared(outMsg);
 		                    objOutStream.flush();
 		                    
-		            		messagesIn = (List<Message>) objInStream.readObject();
-		                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+		            		inMsg = (List<Message>) objInStream.readObject();
+		                    System.out.println("Received [" + inMsg.size() + "] response messages from: " + socket);
 		                    
-		                    for (Message m : messagesIn) {
+		                    for (Message m : inMsg) {
 		                    	System.out.println("Recieved msg type: " + m.getType());
 		                    	Boolean found = ClientHelper.handleShare(m);
 		                    	
@@ -346,15 +347,15 @@ public class ClientCommunicator {
 	            		String userFile = myScnr.nextLine();
 	            		if(!userFile.isEmpty()) {
 		            		Message msgDelete = ClientHelper.generateDeleteItem(user, userFile);
-	            			messagesOut.clear();
-		                	messagesOut.add(msgDelete);
-		                	objOutStream.writeUnshared(messagesOut);
+	            			outMsg.clear();
+		                	outMsg.add(msgDelete);
+		                	objOutStream.writeUnshared(outMsg);
 		                    objOutStream.flush();
 		                    
-		            		messagesIn = (List<Message>) objInStream.readObject();
-		                    System.out.println("Received [" + messagesIn.size() + "] response messages from: " + socket);
+		            		inMsg = (List<Message>) objInStream.readObject();
+		                    System.out.println("Received [" + inMsg.size() + "] response messages from: " + socket);
 		                    
-		                    for (Message m : messagesIn) {
+		                    for (Message m : inMsg) {
 		                    	System.out.println("Recieved msg type: " + m.getType());
 		                    	Boolean found = ClientHelper.handleDeleteItem(m);
 		                    	
@@ -382,9 +383,9 @@ public class ClientCommunicator {
 	            		if(acc_selection == "1") {
 	            			System.out.println("Enter the new password: ");
 	            			password = myScnr.nextLine();
-	            			messagesOut.clear();
+	            			outMsg.clear();
 		                	Message password_msg = ClientHelper.generatePasswordChange(user.getUserName(), password);
-		                	messagesOut.add(password_msg);
+		                	outMsg.add(password_msg);
 	            		}else {
 	            			// loops till the proper email address is entered by the user
 	            			while(true) {
@@ -395,9 +396,9 @@ public class ClientCommunicator {
 		            			else
 		            				System.out.println("\nPlease enter the correct email address!\n");
 	            			}
-	            			messagesOut.clear();
+	            			outMsg.clear();
 		                	Message email_msg = ClientHelper.generateEmailChange(user.getUserName(), email);
-		                	messagesOut.add(email_msg);
+		                	outMsg.add(email_msg);
 	            		}
 	            		break;
 	            	default:
@@ -412,6 +413,14 @@ public class ClientCommunicator {
         System.out.println("Type: " + msg.getType());
         System.out.println("Status: " + msg.getStatus());
         System.out.println("Text: " + msg.getText1());
+    }
+    
+    private static void sendMsgToServer(Message msg) {
+    	// outMsg needs to be declared in diff location for this to work
+    }
+    
+    private static void recieveMsgFromServer(Message msg) {
+    	// inMsg needs to be declared in diff location for this to work
     }
   
 }

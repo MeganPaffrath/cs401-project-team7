@@ -22,7 +22,8 @@ public class ClientCommunicator {
 		}
 	// -------------------------------------------------------^
 	
-	
+	private static List<Message> outMsg = new ArrayList<>();
+    private static List<Message> inMsg = new ArrayList<>();
 
 
 	public static void main(String[] args) throws Exception {
@@ -45,10 +46,6 @@ public class ClientCommunicator {
             // have input
             InputStream inputStream = socket.getInputStream();
             ObjectInputStream objInStream = new ObjectInputStream(inputStream);
-            
-            // List of Message objs
-            List<Message> outMsg = new ArrayList<>();
-            List<Message> inMsg = new ArrayList<>();
             // Communication fully set up -----------------------------------------------^
             
             // User input collector
@@ -416,11 +413,15 @@ public class ClientCommunicator {
     }
     
     private static void sendMsgToServer(Message msg) {
-    	// outMsg needs to be declared in diff location for this to work
+    	// objOutStream needs to be declared in diff location for this to work
+//    	outMsg.clear();
+//    	outMsg.add(loginMsg);
+//    	objOutStream.writeUnshared(outMsg);
+//        objOutStream.flush();
     }
     
     private static void recieveMsgFromServer(Message msg) {
-    	// inMsg needs to be declared in diff location for this to work
+    	// objInStream needs to be declared in diff location for this to work
     }
   
 }
